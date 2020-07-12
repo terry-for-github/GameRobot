@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entities;
+package entity;
 
-import Goods.Armor.Armor;
-import Interfaces.AttackSingle;
-import Interfaces.Equipable;
-import java.util.ArrayList;
+import goods.armor.Armor;
+import interfaces.AttackSingle;
+import interfaces.Equipable;
 
 /**
  *

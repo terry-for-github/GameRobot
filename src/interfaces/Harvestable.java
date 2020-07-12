@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Interfaces;
+package interfaces;
 
-import Entity.Player.Player;
+import entity.player.Player;
 
 /**
  *

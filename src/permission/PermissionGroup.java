@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Permission;
+package permission;
 
-import Entity.Player.Player;
-import GameEvent.GameEvent;
+import entity.player.Player;
+import gameevent.GameEvent;
 import gamerobot.GameRobot;
-import static gamerobot.GameRobot.gameevents;
 import java.util.HashMap;
 import java.util.Map;
 

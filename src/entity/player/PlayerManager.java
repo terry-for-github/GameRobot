@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.Player;
+package entity.player;
 
-import Utils.GsonUtil;
+import utils.GsonUtil;
 import com.google.gson.Gson;
-import java.util.Date;
-import java.util.Timer;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Member;
 import static gamerobot.GameRobot.players;

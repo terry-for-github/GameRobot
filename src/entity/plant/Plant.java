@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.Plant;
+package entity.plant;
 
-import Entity.Player.Player;
-import Entities.SlaughterableEntity;
-import Interfaces.Growable;
-import Interfaces.Harvestable;
-import Interfaces.Hungerable;
+import entity.player.Player;
+import entity.SlaughterableEntity;
+import interfaces.Growable;
+import interfaces.Harvestable;
+import interfaces.Hungerable;
 import static gamerobot.GameRobot.goods;
 import java.util.Map;
 import java.util.UUID;

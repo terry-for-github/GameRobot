@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.Mobs;
+package entity.mobs;
 
 
-import Entities.CombatableEntity;
-import Goods.Armor.Armor;
-import Goods.Good;
-import Interfaces.AttackSingle;
-import Interfaces.BuffAddable;
-import Interfaces.Equipable;
+import entity.CombatableEntity;
+import goods.armor.Armor;
+import goods.Good;
+import interfaces.AttackSingle;
+import interfaces.BuffAddable;
+import interfaces.Equipable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

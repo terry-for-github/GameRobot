@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.Player;
+package entity.player;
 
-import Goods.Good;
-import static Goods.GoodCreater.StringToGoods;
-import Utils.GsonUtil;
+import goods.Good;
+import static goods.GoodCreater.StringToGoods;
+import utils.GsonUtil;
 import gamerobot.GameRobot;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

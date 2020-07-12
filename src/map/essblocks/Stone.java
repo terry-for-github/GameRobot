@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Map.EssBlocks;
+package map.essblocks;
 
-import Entity.Player.Player;
-import Map.Block;
+import entity.player.Player;
+import map.Block;
 
 /**
  *

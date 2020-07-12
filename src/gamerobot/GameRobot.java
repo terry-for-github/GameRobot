@@ -1,22 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gamerobot;
 
-import Entity.Animal.Animal;
-import Entity.Mobs.Mob;
-import Entity.Plant.Plant;
-import Entity.Player.Player;
-import Entity.Player.PlayerCreater;
-import Entity.Player.PlayerManager;
-import GameEvent.GameEvent;
-import Goods.Good;
-import Map.Chunk;
-import Map.ForestBoime.ForestChunk;
-import Map.Location;
-import Utils.Initization;
+import entity.animal.Animal;
+import entity.mobs.Mob;
+import entity.plant.Plant;
+import entity.player.Player;
+import entity.player.PlayerCreater;
+import entity.player.PlayerManager;
+import gameevent.GameEvent;
+import goods.Good;
+import map.Chunk;
+import map.Location;
+import utils.Initization;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -27,15 +21,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Permission.PermissionGroup;
-import static Utils.ImageUtils.CreateLine;
-import static Utils.ImageUtils.imageMargeTest;
-import static Utils.ImageUtils.overlyingImageTest;
-import static Utils.Initization.ReturnPath;
+import permission.PermissionGroup;
+import static utils.ImageUtils.CreateLine;
+import static utils.Initization.ReturnPath;
 import java.io.FileNotFoundException;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactoryJvm;
-import net.mamoe.mirai.event.events.MessageSendEvent.TempMessageSendEvent;
 import net.mamoe.mirai.japt.Events;
 import net.mamoe.mirai.message.FriendMessage;
 import net.mamoe.mirai.message.GroupMessage;

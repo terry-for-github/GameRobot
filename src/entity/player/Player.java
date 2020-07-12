@@ -1,18 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.Player;
+package entity.player;
 
-import Entities.CombatableEntity;
-import Goods.Armor.Armor;
-import Goods.Good;
+import entity.CombatableEntity;
+import goods.armor.Armor;
+import goods.Good;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import Interfaces.AttackSingle;
-import Interfaces.BuffAddable;
-import Interfaces.Equipable;
+import interfaces.AttackSingle;
+import interfaces.BuffAddable;
+import interfaces.Equipable;
 import static gamerobot.GameRobot.bot;
 import java.util.Date;
 import java.util.Timer;

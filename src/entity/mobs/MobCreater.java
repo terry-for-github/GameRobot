@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.Mobs;
+package entity.mobs;
 
-import Goods.Good;
-import static Goods.GoodCreater.StringToGoods;
-import Utils.GsonUtil;
-import static Utils.GsonUtil.GetStringFromObject;
-import static Utils.Initization.ReturnPath;
+import goods.Good;
+import static goods.GoodCreater.StringToGoods;
+import utils.GsonUtil;
+import static utils.GsonUtil.GetStringFromObject;
+import static utils.Initization.ReturnPath;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;

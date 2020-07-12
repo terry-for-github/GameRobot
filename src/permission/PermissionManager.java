@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Permission;
+package permission;
 
-import Entity.Player.Player;
-import GameEvent.GameEvent;
-import Utils.GsonUtil;
+import gameevent.GameEvent;
+import utils.GsonUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import gamerobot.GameRobot;
-import static gamerobot.GameRobot.gameevents;
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

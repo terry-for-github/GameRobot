@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entities;
+package entity;
 
-import Goods.Good;
-import Interfaces.Growable;
-import Interfaces.Harvestable;
-import Interfaces.Hungerable;
 import java.util.HashMap;
 
 
