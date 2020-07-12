@@ -85,18 +85,18 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
     }
 
     //玩家获取经验值
-    public void GetExp(long exp) {
+    public void getExp(long exp) {
         this.setExp(this.getExp() + exp);
-        PlayerLevelUp(this);//判断是否能够升级 若能则升级
+        playerLevelUp(this);//判断是否能够升级 若能则升级
     }
 
     //玩家获得金币
-    public void AddMoney(long money) {
+    public void addMoney(long money) {
         this.money = this.money + money;
     }
 
     //玩家扣除金币
-    public boolean RemoveMoney(long money) {
+    public boolean removeMoney(long money) {
         if (this.money >= money) {
             this.money = this.money - money;
             return true;
@@ -106,7 +106,7 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
     }
 
     //判断玩家是否能够升级 若能升级则升级
-    public static void PlayerLevelUp(Player player) {
+    public static void playerLevelUp(Player player) {
         if (player.getExp() >= player.getMaxexp()) {
             player.setLevel(player.getLevel() + 1);
             player.setPoints(player.getPoints() + 5);
@@ -115,13 +115,13 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
             //递归调用 防止经验溢出后不能再次升级
             if (player.getExp() >= player.getMaxexp()) {
                 player.setExp(player.getExp() - player.getMaxexp());
-                PlayerLevelUp(player);
+                playerLevelUp(player);
             }
         }
     }
 
     //判断玩家是否拥有足够的货物
-    public boolean HaveEnoughGood(Good good, int number) {
+    public boolean haveEnoughGood(Good good, int number) {
         if (this.Store.containsKey(good.getName()) && this.Store.get(good.getName()).getNumber() >= number) {
             return true;
         } else {
@@ -146,8 +146,8 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
     }
 
     //移除玩家的数量 若有足够数量则移除 不过则返回false
-    public boolean PlayerRemoveGood(Good good, int number) {
-        if (HaveEnoughGood(good, number)) {
+    public boolean playerRemoveGood(Good good, int number) {
+        if (haveEnoughGood(good, number)) {
             Good thegood = this.getStore().get(good.getName());
             if (thegood.getNumber() == number) {
                 thegood.setNumber(thegood.getNumber() - number);

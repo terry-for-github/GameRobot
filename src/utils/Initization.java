@@ -36,6 +36,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -46,7 +47,8 @@ import java.util.logging.Logger;
  * @author Administrator
  */
 public class Initization {
-
+    
+    public static Random random=new Random();//随机器 用来取随机数
     static Timer timer = new Timer();
     static Timer time = new Timer();
     static PermissionManager permissionmanager = new PermissionManager();
