@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.mamoe.mirai.contact.Friend;
+import net.mamoe.mirai.contact.Group;
 
 /**
  *
@@ -46,14 +47,14 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
             Player player = this;
             Date date = new Date();
             date.setTime(date.getTime() + 600000);
-            SendMessageToPlayer("你正在复活中\n" + date);
+            SendMessageToPlayerByFriend("你正在复活中\n" + date);
             Timer timer = new Timer();
             Timer timer1 = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     player.setHP(player.getMAXHP());
-                    SendMessageToPlayer("你已经复活了");
+                    SendMessageToPlayerByFriend("你已经复活了");
                     timer1.cancel();
                     timer.cancel();
                 }
@@ -88,11 +89,12 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
         this.setExp(this.getExp() + exp);
         PlayerLevelUp(this);//判断是否能够升级 若能则升级
     }
-    
+
     //玩家获得金币
     public void AddMoney(long money) {
         this.money = this.money + money;
     }
+
     //玩家扣除金币
     public boolean RemoveMoney(long money) {
         if (this.money >= money) {
@@ -102,7 +104,7 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
             return false;
         }
     }
-    
+
     //判断玩家是否能够升级 若能升级则升级
     public static void PlayerLevelUp(Player player) {
         if (player.getExp() >= player.getMaxexp()) {
@@ -126,8 +128,7 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
             return false;
         }
     }
-    
-    
+
     //为玩家增加一定数量货物
     public boolean PlayerAddGood(Good good, int number) {
         //装甲名称需要额外的显示方式 不然会合一块 导致 被损耗的装备被折叠在一起
@@ -160,11 +161,11 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
         }
 
     }
-    
+
     public Friend GetQQ() {
         return bot.getFriend(Long.valueOf(this.getName()));
     }
-    
+
     //攻击个体实体
     @Override
     public int AttackSingle(CombatableEntity A, CombatableEntity B) {
@@ -181,9 +182,9 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
 
         return player;
     }
-    
+
     //向玩家发送一条信息（有好友情况下）
-    public boolean SendMessageToPlayer(String message) {
+    public boolean SendMessageToPlayerByFriend(String message) {
         message = "======================\n     " + message + "     \n======================";
         if (bot.getFriends().contains(Long.parseLong(this.getName()))) {
             bot.getFriend(Long.valueOf(this.getName())).sendMessage(message);
@@ -191,6 +192,12 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
         } else {
             return false;
         }
+    }
+
+    public boolean SendMessageToPlayerByGroup(String message, Group group) {
+        message = "======================\n     " + message + "     \n======================";
+        group.sendMessage(message);
+        return true;
     }
 
     /**

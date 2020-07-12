@@ -6,16 +6,14 @@ import entity.player.Player;
  *
  * @author Administrator
  */
-public class BuildEvent extends GameEvent{
-    
-    public BuildEvent() 
-    {
+public class BuildEvent extends GameEvent {
+
+    public BuildEvent() {
         super("测试");
     }
-    
+
     @Override
-    public void Do(Player player)
-    {
-        player.SendMessageToPlayer("测试");
+    public void Do(Player player) {
+        player.SendMessageToPlayerByFriend("测试");
     }
 }
