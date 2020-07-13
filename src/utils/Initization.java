@@ -24,7 +24,6 @@ import static utils.GsonUtil.formatJson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import gamerobot.GameRobot;
-import static gamerobot.GameRobot.gameevents;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,6 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static gamerobot.GameRobot.gameEvents;
 
 /**
  *
@@ -55,21 +55,21 @@ public class Initization {
 
     public static void Initization() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IllegalArgumentException, IllegalArgumentException, Exception {
 
-        File Main = new File(ReturnPath() + "/data/Main");
-        File Plugins = new File(ReturnPath() + "/data/Plugins");
-        File MobsFile = new File(ReturnPath() + "/data/Main/Entity/Mobs");
-        File PlantsFile = new File(ReturnPath() + "/data/Main/Entity/Plants");
-        File AnimalsFile = new File(ReturnPath() + "/data/Main/Entity/Animals");
-        File Pets = new File(ReturnPath() + "/data/Main/Entity/Pets");
-        File Boss = new File(ReturnPath() + "/data/Main/Entity/Boss");
-        File GoodsFile = new File(ReturnPath() + "/data/Main/Goods");
-        File PlayersFile = new File(ReturnPath() + "/data/Saves/Players");
-        File Permission = new File(ReturnPath() + "/data/Main/Permission");
+        File Main = new File(ReturnPath() + "/Main");
+        File Plugins = new File(ReturnPath() + "/Plugins");
+        File MobsFile = new File(ReturnPath() + "/Main/Entity/Mobs");
+        File PlantsFile = new File(ReturnPath() + "/Main/Entity/Plants");
+        File AnimalsFile = new File(ReturnPath() + "/Main/Entity/Animals");
+        File Pets = new File(ReturnPath() + "/Main/Entity/Pets");
+        File Boss = new File(ReturnPath() + "/Main/Entity/Boss");
+        File GoodsFile = new File(ReturnPath() + "/Main/Goods");
+        File PlayersFile = new File(ReturnPath() + "/Saves/Players");
+        File Permission = new File(ReturnPath() + "/Main/Permission");
 
-        File Admingroup = new File(ReturnPath() + "/data/Main/Permission/所有者.json");
-        File Usergroup = new File(ReturnPath() + "/data/Main/Permission/用户.json");
-        File OPgroup = new File(ReturnPath() + "/data/Main/Permission/管理员.json");
-        File BlackListgroup = new File(ReturnPath() + "/data/Main/Permission/黑名单.json");
+        File Admingroup = new File(ReturnPath() + "/Main/Permission/所有者.json");
+        File Usergroup = new File(ReturnPath() + "/Main/Permission/用户.json");
+        File OPgroup = new File(ReturnPath() + "/Main/Permission/管理员.json");
+        File BlackListgroup = new File(ReturnPath() + "/Main/Permission/黑名单.json");
 
         //
         //创建所有文件夹
@@ -144,7 +144,7 @@ public class Initization {
         }
 
         //游戏时刻读取并且开始轮转
-        File config = new File(ReturnPath() + "/data/config.json");
+        File config = new File(ReturnPath() + "/config.json");
         if (!config.exists()) {
             try {
                 config.createNewFile();
@@ -242,7 +242,7 @@ public class Initization {
                 //遍历File[]数组
                 if (!s.isDirectory()) {
                     System.out.println("       " + "正在初始化动物  " + s.getName());
-                    animal = AnimalCreater.GetAnimalFromFile(s.getPath());
+                    animal = AnimalCreater.getAnimalFromFile(s.getPath());
                     GameRobot.animals.put(animal.getName(), animal);
                 }
             }
@@ -277,7 +277,7 @@ public class Initization {
 
         System.out.print("======================正在加载权限======================\n");
 
-        for (Map.Entry<String, GameEvent> entry : gameevents.entrySet()) {
+        for (Map.Entry<String, GameEvent> entry : gameEvents.entrySet()) {
             File thepermission = new File(Permission.getPath() + "/" + entry.getValue().getMessage() + ".json");
             System.out.print("正在加载  " + entry.getValue().getMessage() + "  权限\n");
             if (new File(Permission.getPath() + "/" + entry.getValue().getMessage()).exists()) {
@@ -297,14 +297,13 @@ public class Initization {
     }
 
     public static String ReturnPath() {
-        String cf = "";
-        File f = new File("");
-        try {
-            cf = f.getCanonicalPath();
-        } catch (IOException ex) {
+        // TODO 为什么记录日志后不再抛出一个错误而正常地返回一个空串
+        try{
+            return new File("").getCanonicalPath() + "/data";
+        } catch (IOException ex){
             Logger.getLogger(Initization.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return cf;
+        return "";
     }
 
     public static void SaveAll() {
@@ -326,8 +325,8 @@ public class Initization {
 
                 }
                 System.out.print("===========正在保存权限与权限组=========\n");
-                File Permission = new File(ReturnPath() + "/data/Main/Permission");
-                for (Map.Entry<String, GameEvent> entry : gameevents.entrySet()) {
+                File Permission = new File(ReturnPath() + "/Main/Permission");
+                for (Map.Entry<String, GameEvent> entry : gameEvents.entrySet()) {
                     File thepermission = new File(Permission.getPath() + "/" + entry.getValue().getMessage() + ".json");
                     System.out.print("正在保存" + entry.getValue().getMessage() + "  权限\n");
                     if (new File(Permission.getPath() + "/" + entry.getValue().getMessage() + ".json").exists()) {
@@ -335,7 +334,7 @@ public class Initization {
                     }
                 }
                 for (Map.Entry<String, PermissionGroup> entry : GameRobot.groups.entrySet()) {
-                    File thegroup = new File(ReturnPath() + "/data/Main/Permission/" + entry.getKey() + ".json");
+                    File thegroup = new File(ReturnPath() + "/Main/Permission/" + entry.getKey() + ".json");
                     permissionmanager.SaveGroup(entry.getValue(), thegroup);
                 }
 
@@ -348,7 +347,7 @@ public class Initization {
 
                 System.out.print("===========��������   =========\n");
 
-                File Plugins = new File(ReturnPath() + "/data/Plugins");
+                File Plugins = new File(ReturnPath() + "/Plugins");
                 File[] pluginsfs = Plugins.listFiles();	//遍历path下的文件和目录，放在File数组中
                 if (pluginsfs.length != 0) {
                     for (File s : pluginsfs) {

@@ -7,5 +7,5 @@ package interfaces;
 
 //可生长
 public interface Growable {
-    public abstract void Grow();
+    public abstract void grow();
 }

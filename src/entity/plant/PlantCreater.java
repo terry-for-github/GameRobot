@@ -24,7 +24,7 @@ public class PlantCreater {
         plant.setAge(jobj.getIntValue("age"));
         plant.setHP(jobj.getIntValue("HP"));
         plant.setMAXHP(jobj.getIntValue("MAXHP"));
-        plant.setMaxage(jobj.getIntValue("maxage"));
+        plant.setMaxAge(jobj.getIntValue("maxAge"));
         plant.setGoods((HashMap<String,Integer>)jobj.get("goods"));
         plant.setTimes(jobj.getIntValue("times"));
         plant.setUuid(UUID.randomUUID());
@@ -32,7 +32,7 @@ public class PlantCreater {
     }
 
     public static void SavePlantToFile(Plant plant) throws IOException {
-        File Plants = new File(ReturnPath() + "/data/Main/Entity/Plants");
+        File Plants = new File(ReturnPath() + "/Main/Entity/Plants");
         File playerdata = new File(Plants + "/" + plant.getName() + ".json");
         if (playerdata.exists()) {
             String string = GetStringFromObject(plant);

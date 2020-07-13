@@ -3,17 +3,20 @@ package entity;
 import java.util.UUID;
 
 /**
- *
+ * 实体
  * @author Administrator
  */
-//实体
 public abstract class Entity {
-
-    private String name;//名称
-    private long MAXHP;//最大血量
-    private long HP;//当前血量
-    private UUID uuid;//唯一标识符
-
+    private String name;    // 名称
+    private long MAXHP;     // 最大血量
+    private long HP;        // 当前血量
+    private UUID uuid;      // 唯一标识符
+    
+    /**
+     * 
+     * @param name 名字
+     * @param MAXHP 血量上线
+     */
     public Entity(String name, long MAXHP) {
         this.name = name;
         this.MAXHP = MAXHP;

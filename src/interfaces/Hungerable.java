@@ -7,5 +7,5 @@ package interfaces;
 
 //会饥饿
 public interface Hungerable {
-    public abstract void Hunger();
+    public abstract void hunger();
 }

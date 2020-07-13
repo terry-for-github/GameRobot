@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static utils.Initization.ReturnPath;
 
 /**
  *
@@ -49,14 +50,7 @@ public class PlayerManager {
     //将玩家保存到文件
     public static void SavePlayerToFile(long id, Player player) {
         Gson gson = new Gson();
-        File f = new File("");
-        String cf = "";
-        try {
-            cf = f.getCanonicalPath();
-        } catch (IOException ex) {
-            Logger.getLogger(PlayerManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        File file = new File(cf + "/data/Saves/Players/" + id + "/" + id + ".json");
+        File file = new File(ReturnPath() + "/Saves/Players/" + id + "/" + id + ".json");
         if (file.exists()) {
             String string = gson.toJson(player);
             GsonUtil.SaveStringToJsonFile(string, file);

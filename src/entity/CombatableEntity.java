@@ -5,23 +5,24 @@ import interfaces.AttackSingle;
 import interfaces.Equipable;
 
 /**
- *
+ * 可作战的实体
  * @author Administrator
  */
-//可战斗的实体
 public abstract class CombatableEntity extends Entity implements Cloneable, AttackSingle, Equipable{
+    private long ATK;       // 攻击力
+    private long DEF;       // 防御力
+    private long MATK;      // 法术强度
+    private long MDEF;      // 魔法抗性
+    private double ASPD;    // 攻击速度
+    private double DSPD;    // 施法速度
+    private long strength;  // 力量
+    private long agile;     // 敏捷
+    private long wisdom;    // 智力
 
-    private long ATK;//攻击力
-    private long DEF;//防御力
-    private long MATK;//法术强度
-    private long MDEF;//魔法抗性
-    private double ASPD;//攻击速度
-    private double DSPD;//施法速度
-    private long strength;//力量
-    private long agile;//敏捷
-    private long wisdom;//智力
-
-
+    /**
+     * 
+     * @param name 名字
+     */
     public CombatableEntity(String name) {
         super(name, 100);
         this.ATK = 1;
@@ -32,7 +33,6 @@ public abstract class CombatableEntity extends Entity implements Cloneable, Atta
         this.strength = 1;
         this.agile = 1;
         this.wisdom = 1;
-
     }
 
     /**
@@ -162,14 +162,20 @@ public abstract class CombatableEntity extends Entity implements Cloneable, Atta
     }
 
     /**
-     * @return the skills
+     * 两个可作战实体互相攻击
+     * @param A
+     * @param B
+     * @return 
      */
-    
     @Override
     public int AttackSingle(CombatableEntity A, CombatableEntity B) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * 穿上装备
+     * @param armor 
+     */
     @Override
     public void Equip(Armor armor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

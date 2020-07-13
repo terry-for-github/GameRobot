@@ -9,5 +9,5 @@ import entity.player.Player;
 
 //可收获
 public interface Harvestable {
-    public abstract void Harvest(Player player);
+    public abstract void harvest(Player player);
 }

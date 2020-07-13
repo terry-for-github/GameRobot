@@ -2,25 +2,28 @@ package entity;
 
 import java.util.HashMap;
 
-
 /**
- *
+ * 可以收获的实体
  * @author Administrator
  */
-//可被收获的实体
 public abstract class SlaughterableEntity extends Entity {
+    private HashMap<String, Integer> good = new HashMap<>();    // 收获获得的物品与数量
+    private int times;                                          // 可被收获的次数
+    private long age;                                           // 当前成长度
+    private long maxAge;                                        // 最大成长度
 
-    private HashMap<String, Integer> good = new HashMap<>();//收获获得的物品与数量
-    private int times;//可被收获的次数
-    private long age;//当前成长度
-    private long maxage;//最大成长度
-
-    public SlaughterableEntity(String name, long MAXHP, int times, long maxage) {
+    /**
+     * 
+     * @param name 名字
+     * @param MAXHP 血量上线
+     * @param times 可以被收获的次数
+     * @param maxAge 最大成长度
+     */
+    public SlaughterableEntity(String name, long MAXHP, int times, long maxAge) {
         super(name, MAXHP);
         this.times = times;
         this.age = 0;
-        this.maxage = maxage;
-
+        this.maxAge = maxAge;
     }
 
     /**
@@ -52,17 +55,17 @@ public abstract class SlaughterableEntity extends Entity {
     }
 
     /**
-     * @return the maxage
+     * @return the maxAge
      */
-    public long getMaxage() {
-        return maxage;
+    public long getMaxAge() {
+        return maxAge;
     }
 
     /**
-     * @param maxage the maxage to set
+     * @param maxAge the maxAge to set
      */
-    public void setMaxage(int maxage) {
-        this.maxage = maxage;
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
     }
 
     /**
@@ -78,5 +81,4 @@ public abstract class SlaughterableEntity extends Entity {
     public void setGoods(HashMap<String, Integer> goods) {
         this.good = goods;
     }
-
 }

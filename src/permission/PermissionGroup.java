@@ -44,7 +44,7 @@ public abstract class PermissionGroup {
         if (!this.members.containsValue(player.getName())) {
             this.getMembers().put(Long.valueOf(player.getName()), player.getName());
             for (Map.Entry<String, String> entry : this.events.entrySet()) {
-                GameRobot.gameevents.get(entry.getKey()).AddPermission(GameRobot.players.get(entry.getValue()));
+                GameRobot.gameEvents.get(entry.getKey()).AddPermission(GameRobot.players.get(entry.getValue()));
             }
 
         }
@@ -54,7 +54,7 @@ public abstract class PermissionGroup {
         if (this.getMembers().containsValue(player.getName())) {
             this.getMembers().remove(Long.valueOf(player.getName()), player.getName());
             for (Map.Entry<String, String> entry : this.events.entrySet()) {
-                GameRobot.gameevents.get(entry.getKey()).RemvoePermission(GameRobot.players.get(entry.getValue()));
+                GameRobot.gameEvents.get(entry.getKey()).RemvoePermission(GameRobot.players.get(entry.getValue()));
             }
         }
     }

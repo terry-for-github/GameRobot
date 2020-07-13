@@ -10,52 +10,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
- *
+ * 动物实体类
  * @author Administrator
  */
-//动物实体类
 public class Animal extends SlaughterableEntity implements Growable, Harvestable, Hungerable, Cloneable {
-
-    private Map<String, Integer> forage = new HashMap<>();//饲料
-
-    public Animal(String name, long MAXHP, int times, int maxage) {
-        super(name, MAXHP, times, maxage);
+    private Map<String, Integer> forage = new HashMap<>();  // 饲料
+    
+    /**
+     * 
+     * @param name 名字
+     * @param MAXHP 血量上限
+     * @param times 可以收获的次数
+     * @param maxAge  最大成长度
+     */
+    public Animal(String name, long MAXHP, int times, int maxAge) {
+        super(name, MAXHP, times, maxAge);
     }
-
-    @Override
-    public Animal clone() {
-        Animal plant = null;
-        try {
-            plant = (Animal) super.clone();
-            plant.setUuid(UUID.randomUUID());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        return plant;
-    }
-
-    @Override
-    public void Grow() {
-        this.setAge(this.getAge()+100);
-    }
-
-    @Override
-    public void Harvest(Player player) {
-        for (Map.Entry<String, Integer> entry : this.getGoods().entrySet()) {
-            player.PlayerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
-        }
-    }
-
-    @Override
-    public void Hunger() {
-        if (this.getHP() > 0) {
-            this.setHP(this.getHP() - 1);
-        }
-    }
-
+    
     /**
      * @return the forage
      */
@@ -69,8 +41,45 @@ public class Animal extends SlaughterableEntity implements Growable, Harvestable
     public void setForage(Map<String, Integer> forage) {
         this.forage = forage;
     }
-
+    
     /**
-     * @return the forage
+     * 
+     * @return
+     * @throws CloneNotSupportedException 
      */
+    @Override
+    public Animal clone() throws CloneNotSupportedException {
+        Animal plant = (Animal) super.clone();
+        plant.setUuid(UUID.randomUUID());
+        return plant;
+    }
+    
+    /**
+     * 生长
+     */
+    @Override
+    public void grow() {
+        this.setAge(this.getAge() + 100);
+    }
+    
+    /**
+     * 被玩家收获
+     * @param player 玩家 
+     */
+    @Override
+    public void harvest(Player player) {
+        for (Map.Entry<String, Integer> entry : this.getGoods().entrySet()) {
+            player.PlayerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
+        }
+    }
+    
+    /**
+     * 当饥饿时会发生的事件
+     */
+    @Override
+    public void hunger() {
+        if (this.getHP() > 0) {
+            this.setHP(this.getHP() - 1);
+        }
+    }
 }

@@ -12,12 +12,18 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- *
+ * 创造动物
  * @author Administrator
  */
 public class AnimalCreater {
-    //从文件获取动物
-    public static Animal GetAnimalFromFile(String filepath) {
+    private AnimalCreater() {}
+    
+    /**
+     * 从文件获取动物
+     * @param filepath 文件路径
+     * @return 
+     */
+    public static Animal getAnimalFromFile(String filepath) {
         String message = GsonUtil.readJsonFile(filepath);
         JSONObject jobj = JSON.parseObject(message);
         Animal animal = new Animal("无", 1, 1, 1);
@@ -25,17 +31,21 @@ public class AnimalCreater {
         animal.setAge(jobj.getIntValue("age"));
         animal.setHP(jobj.getIntValue("HP"));
         animal.setMAXHP(jobj.getIntValue("MAXHP"));
-        animal.setMaxage(jobj.getIntValue("maxage"));
+        animal.setMaxAge(jobj.getIntValue("maxAge"));
         animal.setGoods((HashMap<String, Integer>) jobj.get("goods"));
         animal.setForage((Map<String, Integer>) jobj.get("forage"));
-
         animal.setTimes(jobj.getIntValue("times"));
         animal.setUuid(UUID.randomUUID());
         return animal;
     }
-
-    public static void SaveAnimalToFile(Animal animal) throws IOException {
-        File Animals = new File(ReturnPath() + "/data/Main/Entity/Animals");
+    
+    /**
+     * 把动物保存到文件中
+     * @param animal
+     * @throws IOException 
+     */
+    public static void saveAnimalToFile(Animal animal) throws IOException {
+        File Animals = new File(ReturnPath() + "/Main/Entity/Animals");
         File playerdata = new File(Animals + "/" + animal.getName() + ".json");
         if (playerdata.exists()) {
             String string = GetStringFromObject(animal);

@@ -52,7 +52,7 @@ public class MobCreater {
     }
 
     public static void SaveMobToFile(Mob mob) throws IOException {
-        File Mobs = new File(ReturnPath() + "/data/Main/Entity/Mobs");
+        File Mobs = new File(ReturnPath() + "/Main/Entity/Mobs");
         Gson gson = new Gson();
         File playerdata = new File(Mobs + "/" + mob.getName() + ".json");
         if (playerdata.exists()) {

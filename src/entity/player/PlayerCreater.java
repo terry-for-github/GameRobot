@@ -77,11 +77,11 @@ public class PlayerCreater {
         File f = new File("");
         String cf = "";
         cf = f.getCanonicalPath();
-        File datafile = new File(cf + "/data/Saves/Players/" + id);
+        File datafile = new File(cf + "/Saves/Players/" + id);
         if (!datafile.exists()) {
             datafile.mkdirs();
         }
-        File file = new File(cf + "/data/Saves/Players/" + id + "/" + id + ".json");
+        File file = new File(cf + "/Saves/Players/" + id + "/" + id + ".json");
         if (!file.exists()) {
             Player player = new Player(String.valueOf(id));
             GameRobot.players.put(player.getName(), player);
@@ -98,7 +98,7 @@ public class PlayerCreater {
         File f = new File("");
         String cf = "";
         cf = f.getCanonicalPath();
-        File playerdata = new File(cf + "/data/Saves/Players/" + id + ".json");
+        File playerdata = new File(cf + "/Saves/Players/" + id + ".json");
         if (playerdata.exists()) {
             String string = gson.toJson(player);
             GsonUtil.SaveStringToJsonFile(string, playerdata);

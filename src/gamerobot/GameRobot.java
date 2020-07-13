@@ -39,13 +39,12 @@ import net.mamoe.mirai.utils.SystemDeviceInfoKt;
  * @author Administrator
  */
 public class GameRobot {
-
     /**
-     * @param args the command line arguments
+     * 主类
      */
-    //不需要高并发的存取
-    public static boolean cando = true;
-    public static long time;
+    
+    public static boolean canRecieveFriendMessage = true;
+    public static long time = 0;
 
     //高取不存（需要被复制）
     public static Map<String, Mob> mobs = new ConcurrentHashMap<>();//所有的怪物
@@ -56,7 +55,7 @@ public class GameRobot {
 
     public static Map<String, Animal> animals = new ConcurrentHashMap<>();//所有的动物
 
-    public static Map<String, GameEvent> gameevents = new ConcurrentHashMap<>();//所有的触发
+    public static Map<String, GameEvent> gameEvents = new ConcurrentHashMap<>();//所有的触发
 
     public static Map<String, PermissionGroup> groups = new ConcurrentHashMap<>();//所有的组
 
@@ -70,72 +69,84 @@ public class GameRobot {
     public static ExecutorService executorService = Executors.newCachedThreadPool();
     public static Bot bot;
 
-    public static void main(String[] args) throws InterruptedException, IOException, IllegalAccessException, IllegalArgumentException, IllegalArgumentException, InvocationTargetException, InvocationTargetException, NoSuchMethodException, NoSuchMethodException, InstantiationException, MalformedURLException, ClassNotFoundException, ClassNotFoundException, Exception {
-//
-
+    /**
+     *
+     * @param args
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws MalformedURLException
+     * @throws ClassNotFoundException
+     * @throws Exception
+     */
+    public static void main(String[] args) throws InterruptedException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InstantiationException, MalformedURLException, ClassNotFoundException, Exception {
 //        // 测试图片的叠加
 //        overlyingImageTest();
 //        // 测试图片的垂直合并
 //        imageMargeTest();
-        //用于作机器人的qq账户
+//        // 用于作机器人的qq账户
 //        Scanner scanner = new Scanner(System.in);
 //        System.out.println("请输入账户");
 //        long account = scanner.nextLong();
 //        System.out.println("请输入密码");
 //        String password = scanner.next();
-        //机器人初始化
+
+        // 机器人初始化
         bot = BotFactoryJvm.newBot(501864196, "fuck:19980504", new BotConfiguration() {
             {
-                setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File(ReturnPath() + "/data/deviceInfo.json"), context));
+                setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File(ReturnPath() + "/deviceInfo.json"), context));
             }
         });
 
-        //初始化所有信息
+        // 初始化所有信息
         Initization.Initization();
 
-        //        机器人登录
+        // 机器人登录
         bot.login();
-
-        Events.subscribeAlways(FriendMessage.class,
-                (FriendMessage event)
-                -> {
-
-        });
-
-        //私聊触发
-        Events.subscribeAlways(FriendMessage.class,
-                (FriendMessage event) -> {
-
-                    if (cando) {
-                        if (gameevents.containsKey(event.getMessage().contentToString().split(" ")[0])) {
-                            pool.submit(new Thread() {
-                                @Override
-                                public void run() {
-                                    if (!PlayerManager.ExistThisPlayer(event.getSender())) {
-                                        try {
-                                            PlayerCreater.CreatePlayer(event.getSender().getId());
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(GameRobot.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                    }
-                                    GameEvent groupevent = gameevents.get(event.getMessage().contentToString().split(" ")[0]);
-                                    Player player = players.get(String.valueOf(event.getSender().getId()));
-
-                                    if (groupevent.isIsopen()) {
-                                        groupevent.Do(player);
-                                        groupevent.Do(player, event.getMessage().contentToString());
-                                    }
-                                }
-                            });
-
+        
+        // 私聊触发
+        Events.subscribeAlways(FriendMessage.class, (FriendMessage event) -> {
+            String eventContent = event.getMessage().contentToString();
+            String eventKey = eventContent.split(" ")[0];
+            long playerId = event.getSender().getId();
+            String playerKey = String.valueOf(playerId);
+            
+            if (canRecieveFriendMessage && gameEvents.containsKey(eventKey)) {
+                pool.submit(new Thread() {
+                    @Override
+                    public void run() {
+                        if (!PlayerManager.ExistThisPlayer(event.getSender())) {
+                            try {
+                                PlayerCreater.CreatePlayer(playerId);
+                            } catch (IOException ex) {
+                                Logger.getLogger(GameRobot.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
+                        GameEvent groupEvent = gameEvents.get(eventKey);
+                        Player player = players.get(String.valueOf(playerId));
 
+                        if (groupEvent.isIsopen()) {
+                            groupEvent.Do(player);
+                            groupEvent.Do(player, eventContent);
+                        }
                     }
                 });
+            }
+        });
 
-        //群组消息触发
+
+        // 群组消息触发
         Events.subscribeAlways(GroupMessage.class, (GroupMessage event) -> {
-            if (event.getMessage().contentToString().equals("Test")) {
+            String eventContent = event.getMessage().contentToString();
+            String eventKey = eventContent.split(" ")[0];
+            long playerId = event.getSender().getId();
+            String playerKey = String.valueOf(playerId);
+            
+            if (eventContent.equals("Test")) {
                 Image image;
                 try {
                     System.out.println("Test");
@@ -144,60 +155,50 @@ public class GameRobot {
                 } catch (FileNotFoundException ex) {
 
                 }
-
             }
-            if (gameevents.containsKey(event.getMessage().contentToString().split(" ")[0])) {
-
+            
+            if (gameEvents.containsKey(eventKey)) {
                 pool.submit(new Thread() {
                     @Override
                     public void run() {
-
                         if (!PlayerManager.ExistThisPlayer(event.getSender())) {
                             try {
-                                PlayerCreater.CreatePlayer(event.getSender().getId());
+                                PlayerCreater.CreatePlayer(playerId);
                             } catch (IOException ex) {
                                 Logger.getLogger(GameRobot.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
 
-                        Player player = players.get(String.valueOf(event.getSender().getId()));
-                        GameEvent groupevent = gameevents.get(event.getMessage().contentToString().split(" ")[0]);
-                        //是否开启
-
-                        if (groupevent.isIsopen()) {
-                            //是否所有人都可以用
-
-                            if (groupevent.isOpen() || groups.get("所有者").getMembers().containsValue(player.getName())) {
-                                groupevent.Do(event.getGroup());
-                                groupevent.Do(player);
-                                groupevent.Do(event.getGroup(), event.getMessage().contentToString());
-                                groupevent.Do(event.getGroup(), player);
+                        Player player = players.get(playerKey);
+                        GameEvent groupEvent = gameEvents.get(eventKey);
+                        // 是否开启
+                        if (groupEvent.isIsopen()) {
+                            // 是否所有人都可以用
+                            if (groupEvent.isOpen() || groups.get("所有者").getMembers().containsValue(player.getName())) {
+                                groupEvent.Do(event.getGroup());
+                                groupEvent.Do(player);
+                                groupEvent.Do(event.getGroup(), eventContent);
+                                groupEvent.Do(event.getGroup(), player);
                             } else {
-                                //是否拥有权限
-
-                                if (groupevent.getPermissions().containsKey(event.getSender().getId())) {
-                                    groupevent.Do(event.getGroup());
-                                    groupevent.Do(player);
-                                    groupevent.Do(event.getGroup(), event.getMessage().contentToString());
-                                    groupevent.Do(event.getGroup(), player);
+                                // 是否拥有权限
+                                if (groupEvent.getPermissions().containsKey(event.getSender().getId())) {
+                                    groupEvent.Do(event.getGroup());
+                                    groupEvent.Do(player);
+                                    groupEvent.Do(event.getGroup(), eventContent);
+                                    groupEvent.Do(event.getGroup(), player);
                                 } else {
                                     event.getGroup().sendMessage("你没有权限");
                                 }
                             }
-
                         } else {
                             event.getGroup().sendMessage("管理员未开放此功能");
                         }
-
                     }
                 });
-
             }
+        });
 
-        }
-        );
-
-        bot.join(); // 阻塞当前线程直到 bot 离线
+        // 阻塞当前线程直到 bot 离线
+        bot.join(); 
     }
-
 }

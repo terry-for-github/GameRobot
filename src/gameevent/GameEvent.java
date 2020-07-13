@@ -20,7 +20,7 @@ public abstract class GameEvent {
 
     public GameEvent(String message) {
         this.message = message;
-        GameRobot.gameevents.put(message, this);
+        GameRobot.gameEvents.put(message, this);
     }
     
     //添加此事件权限

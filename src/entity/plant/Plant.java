@@ -36,12 +36,12 @@ public class Plant extends SlaughterableEntity implements Growable, Harvestable,
     }
 
     @Override
-    public void Grow() {
+    public void grow() {
         this.setAge(this.getAge() + 100);
     }
 
     @Override
-    public void Harvest(Player player) {
+    public void harvest(Player player) {
         for (Map.Entry<String, Integer> entry : this.getGoods().entrySet()) {
             player.PlayerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
         }
@@ -49,7 +49,7 @@ public class Plant extends SlaughterableEntity implements Growable, Harvestable,
     }
 
     @Override
-    public void Hunger() {
+    public void hunger() {
         if (this.getHP() > 0) {
             this.setHP(this.getHP() - 1);
         }

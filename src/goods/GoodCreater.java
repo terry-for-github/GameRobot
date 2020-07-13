@@ -125,7 +125,7 @@ public class GoodCreater {
     
     
     public static void SaveArmorToFile(Armor armor) throws IOException {
-        File Goods = new File(ReturnPath() + "/data/Main/Goods");
+        File Goods = new File(ReturnPath() + "/Main/Goods");
 
         File playerdata = new File(Goods + "/" + armor.getName() + ".json");
         if (playerdata.exists()) {
@@ -139,7 +139,7 @@ public class GoodCreater {
     }
 
     public static void SaveConsumablesToFile(Consumables consumables) throws IOException {
-        File Goods = new File(ReturnPath() + "/data/Main/Goods");
+        File Goods = new File(ReturnPath() + "/Main/Goods");
         Gson gson = new Gson();
         File playerdata = new File(Goods + "/" + consumables.getName() + ".json");
         if (playerdata.exists()) {
