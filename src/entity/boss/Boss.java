@@ -3,16 +3,15 @@ package entity.boss;
 import entity.CombatableEntity;
 
 /**
- *
+ * Boss实体
  * @author Administrator
  */
-
-//Boss 实体（未开发）
 public class Boss extends CombatableEntity{
-    
-    public Boss(String name) 
-    {
+    /**
+     * 
+     * @param name 名字
+     */
+    public Boss(String name) {
         super(name);
     }
-    
 }

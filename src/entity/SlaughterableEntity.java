@@ -15,12 +15,12 @@ public abstract class SlaughterableEntity extends Entity {
     /**
      * 
      * @param name 名字
-     * @param MAXHP 血量上线
+     * @param maxHP 血量上线
      * @param times 可以被收获的次数
      * @param maxAge 最大成长度
      */
-    public SlaughterableEntity(String name, long MAXHP, int times, long maxAge) {
-        super(name, MAXHP);
+    public SlaughterableEntity(String name, long maxHP, int times, long maxAge) {
+        super(name, maxHP);
         this.times = times;
         this.age = 0;
         this.maxAge = maxAge;

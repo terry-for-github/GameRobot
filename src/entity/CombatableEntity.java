@@ -18,21 +18,39 @@ public abstract class CombatableEntity extends Entity implements Cloneable, Atta
     private long strength;  // 力量
     private long agile;     // 敏捷
     private long wisdom;    // 智力
-
+    
     /**
      * 
      * @param name 名字
      */
     public CombatableEntity(String name) {
+        this(name, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    }
+    
+    /**
+     * 
+     * @param name 名字
+     * @param ATK 攻击力
+     * @param DEF 防御力
+     * @param MATK 法术强度
+     * @param MDEF 魔法抗性
+     * @param ASPD 攻击速度
+     * @param DSPD 施法速度
+     * @param strength 力量
+     * @param agile 敏捷
+     * @param wisdom 智力
+     */
+    public CombatableEntity(String name, long ATK, long DEF, long MATK, long MDEF, double ASPD, double DSPD, long strength, long agile, long wisdom){
         super(name, 100);
-        this.ATK = 1;
-        this.ASPD = 1;
-        this.DEF = 1;
-        this.MATK = 1;
-        this.MDEF = 1;
-        this.strength = 1;
-        this.agile = 1;
-        this.wisdom = 1;
+        this.ATK = ATK;
+        this.DEF = DEF;
+        this.MATK = MATK;
+        this.MDEF = MDEF;
+        this.ASPD = ASPD;
+        this.DSPD = DSPD;
+        this.strength = strength;
+        this.agile = agile;
+        this.wisdom = wisdom;
     }
 
     /**
@@ -162,13 +180,13 @@ public abstract class CombatableEntity extends Entity implements Cloneable, Atta
     }
 
     /**
-     * 两个可作战实体互相攻击
-     * @param A
-     * @param B
-     * @return 
+     * 实体A攻击实体B，不支持
+     * @param A 实体A
+     * @param B 实体B
+     * @return 造成的伤害
      */
     @Override
-    public int AttackSingle(CombatableEntity A, CombatableEntity B) {
+    public int attackSingle(CombatableEntity A, CombatableEntity B) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -177,7 +195,7 @@ public abstract class CombatableEntity extends Entity implements Cloneable, Atta
      * @param armor 
      */
     @Override
-    public void Equip(Armor armor) {
+    public void equip(Armor armor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

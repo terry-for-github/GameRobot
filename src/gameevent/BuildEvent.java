@@ -14,6 +14,6 @@ public class BuildEvent extends GameEvent {
 
     @Override
     public void Do(Player player) {
-        player.SendMessageToPlayerByFriend("测试");
+        player.sendMessageToPlayerByFriend("测试");
     }
 }

@@ -1,1 +1,1 @@
-{"Equip":{},"Store":{},"money":0,"level":1,"exp":0,"maxexp":100,"points":0,"ATK":1,"DEF":1,"MATK":1,"MDEF":1,"ASPD":1.0,"DSPD":0.0,"strength":1,"agile":1,"wisdom":1,"name":"492397708","MAXHP":100,"HP":100,"uuid":"5f549a59-f085-402d-9d81-5e6628f44955"}
+{"equip":{},"store":{},"money":0,"level":1,"exp":0,"maxExp":0,"points":0,"ATK":1,"DEF":1,"MATK":1,"MDEF":1,"ASPD":1.0,"DSPD":0.0,"strength":1,"agile":1,"wisdom":1,"name":"492397708","maxHP":0,"HP":100,"uuid":"5f549a59-f085-402d-9d81-5e6628f44955"}

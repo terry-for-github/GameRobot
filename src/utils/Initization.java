@@ -65,7 +65,6 @@ public class Initization {
         File GoodsFile = new File(ReturnPath() + "/Main/Goods");
         File PlayersFile = new File(ReturnPath() + "/Saves/Players");
         File Permission = new File(ReturnPath() + "/Main/Permission");
-
         File Admingroup = new File(ReturnPath() + "/Main/Permission/所有者.json");
         File Usergroup = new File(ReturnPath() + "/Main/Permission/用户.json");
         File OPgroup = new File(ReturnPath() + "/Main/Permission/管理员.json");
@@ -195,7 +194,7 @@ public class Initization {
                 //遍历File[]数组
                 if (s.isDirectory()) {
                     System.out.println("       " + "正在初始化玩家  " + s.getName());
-                    player = PlayerCreater.GetPlayerFromFile(s.getPath() + "/" + s.getName() + ".json");
+                    player = PlayerCreater.getPlayerFromFile(s.getPath() + "/" + s.getName() + ".json");
                     GameRobot.players.put(player.getName(), player);
                 }
             }
@@ -210,7 +209,7 @@ public class Initization {
                 //遍历File[]数组
                 if (!s.isDirectory()) {
                     System.out.println("       " + "正在初始化怪物  " + s.getName());
-                    mob = MobCreater.GetMobFromFile(s.getPath());
+                    mob = MobCreater.getMobFromFile(s.getPath());
                     GameRobot.mobs.put(mob.getName(), mob);
                 }
             }
@@ -226,7 +225,7 @@ public class Initization {
                 //遍历File[]数组
                 if (!s.isDirectory()) {
                     System.out.println("       " + "正在初始化植物  " + s.getName());
-                    plant = PlantCreater.GetPlantFromFile(s.getPath());
+                    plant = PlantCreater.getPlantFromFile(s.getPath());
                     GameRobot.plants.put(plant.getName(), plant);
                 }
             }

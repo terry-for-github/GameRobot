@@ -8,19 +8,19 @@ import java.util.UUID;
  */
 public abstract class Entity {
     private String name;    // 名称
-    private long MAXHP;     // 最大血量
+    private long maxHP;     // 最大血量
     private long HP;        // 当前血量
     private UUID uuid;      // 唯一标识符
     
     /**
      * 
      * @param name 名字
-     * @param MAXHP 血量上线
+     * @param maxHP 血量上线
      */
-    public Entity(String name, long MAXHP) {
+    public Entity(String name, long maxHP) {
         this.name = name;
-        this.MAXHP = MAXHP;
-        this.HP = MAXHP;
+        this.maxHP = maxHP;
+        this.HP = maxHP;
         this.uuid = UUID.randomUUID();
     }
 
@@ -41,15 +41,15 @@ public abstract class Entity {
     /**
      * @return the MAXHP
      */
-    public long getMAXHP() {
-        return MAXHP;
+    public long getMaxHP() {
+        return maxHP;
     }
 
     /**
-     * @param MAXHP the MAXHP to set
+     * @param maxHP the MAXHP to set
      */
-    public void setMAXHP(long MAXHP) {
-        this.MAXHP = MAXHP;
+    public void setMaxHP(long maxHP) {
+        this.maxHP = maxHP;
     }
 
     /**

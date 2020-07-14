@@ -10,5 +10,5 @@ import goods.armor.Armor;
 //可装备
 public interface Equipable {
 
-    public void Equip(Armor armor);
+    public void equip(Armor armor);
 }

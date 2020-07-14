@@ -121,7 +121,7 @@ public class GameRobot {
                     public void run() {
                         if (!PlayerManager.ExistThisPlayer(event.getSender())) {
                             try {
-                                PlayerCreater.CreatePlayer(playerId);
+                                PlayerCreater.createPlayer(playerId);
                             } catch (IOException ex) {
                                 Logger.getLogger(GameRobot.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -163,7 +163,7 @@ public class GameRobot {
                     public void run() {
                         if (!PlayerManager.ExistThisPlayer(event.getSender())) {
                             try {
-                                PlayerCreater.CreatePlayer(playerId);
+                                PlayerCreater.createPlayer(playerId);
                             } catch (IOException ex) {
                                 Logger.getLogger(GameRobot.class.getName()).log(Level.SEVERE, null, ex);
                             }

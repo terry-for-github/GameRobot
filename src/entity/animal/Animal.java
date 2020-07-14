@@ -20,12 +20,12 @@ public class Animal extends SlaughterableEntity implements Growable, Harvestable
     /**
      * 
      * @param name 名字
-     * @param MAXHP 血量上限
+     * @param maxHP 血量上限
      * @param times 可以收获的次数
      * @param maxAge  最大成长度
      */
-    public Animal(String name, long MAXHP, int times, int maxAge) {
-        super(name, MAXHP, times, maxAge);
+    public Animal(String name, long maxHP, int times, int maxAge) {
+        super(name, maxHP, times, maxAge);
     }
     
     /**
@@ -69,7 +69,7 @@ public class Animal extends SlaughterableEntity implements Growable, Harvestable
     @Override
     public void harvest(Player player) {
         for (Map.Entry<String, Integer> entry : this.getGoods().entrySet()) {
-            player.PlayerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
+            player.playerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
         }
     }
     

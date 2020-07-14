@@ -8,7 +8,6 @@ import static utils.GsonUtil.GetStringFromObject;
 import static utils.Initization.ReturnPath;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
 import static gamerobot.GameRobot.goods;
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class GoodCreater {
     //将文件获取的HASHMAP转换成物品的MAP
     public static Map<String, Good> StringToGoods(Map<String, String> goods) {
         Map map = new HashMap<>();
-        for (Map.Entry<String, String> entry : goods.entrySet()) {
+        goods.entrySet().forEach(entry -> {
             Consumables consumables = new Consumables("无", "无");
             Armor armor = new Armor("无", "无");
             JSONObject json = JSONObject.parseObject(JSON.toJSONString(entry.getValue()));
@@ -117,17 +116,14 @@ public class GoodCreater {
                 armor.setWisdom(json.getLongValue("wisdom"));
                 map.put(entry.getKey(), armor);
             }
-
-        }
+        });
         return map;
     }
     
     
     
     public static void SaveArmorToFile(Armor armor) throws IOException {
-        File Goods = new File(ReturnPath() + "/Main/Goods");
-
-        File playerdata = new File(Goods + "/" + armor.getName() + ".json");
+        File playerdata = new File(ReturnPath() + "/Main/Goods/" + armor.getName() + ".json");
         if (playerdata.exists()) {
             String string = GetStringFromObject(armor);
             GsonUtil.SaveStringToJsonFile(string, playerdata);
@@ -139,9 +135,7 @@ public class GoodCreater {
     }
 
     public static void SaveConsumablesToFile(Consumables consumables) throws IOException {
-        File Goods = new File(ReturnPath() + "/Main/Goods");
-        Gson gson = new Gson();
-        File playerdata = new File(Goods + "/" + consumables.getName() + ".json");
+        File playerdata = new File(ReturnPath() + "/Main/Goods/" + consumables.getName() + ".json");
         if (playerdata.exists()) {
             String string = GetStringFromObject(consumables);
             GsonUtil.SaveStringToJsonFile(string, playerdata);

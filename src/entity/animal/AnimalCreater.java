@@ -21,7 +21,7 @@ public class AnimalCreater {
     /**
      * 从文件获取动物
      * @param filepath 文件路径
-     * @return 
+     * @return 动物
      */
     public static Animal getAnimalFromFile(String filepath) {
         String message = GsonUtil.readJsonFile(filepath);
@@ -30,7 +30,7 @@ public class AnimalCreater {
         animal.setName(jobj.getString("name"));
         animal.setAge(jobj.getIntValue("age"));
         animal.setHP(jobj.getIntValue("HP"));
-        animal.setMAXHP(jobj.getIntValue("MAXHP"));
+        animal.setMaxHP(jobj.getIntValue("maxHP"));
         animal.setMaxAge(jobj.getIntValue("maxAge"));
         animal.setGoods((HashMap<String, Integer>) jobj.get("goods"));
         animal.setForage((Map<String, Integer>) jobj.get("forage"));
@@ -41,19 +41,18 @@ public class AnimalCreater {
     
     /**
      * 把动物保存到文件中
-     * @param animal
+     * @param animal 动物
      * @throws IOException 
      */
     public static void saveAnimalToFile(Animal animal) throws IOException {
-        File Animals = new File(ReturnPath() + "/Main/Entity/Animals");
-        File playerdata = new File(Animals + "/" + animal.getName() + ".json");
-        if (playerdata.exists()) {
+        File playerData = new File(ReturnPath() + "/Main/Entity/Animals/" + animal.getName() + ".json");
+        if (playerData.exists()) {
             String string = GetStringFromObject(animal);
-            GsonUtil.SaveStringToJsonFile(string, playerdata);
+            GsonUtil.SaveStringToJsonFile(string, playerData);
         } else {
-            playerdata.createNewFile();
+            playerData.createNewFile();
             String string = GetStringFromObject(animal);
-            GsonUtil.SaveStringToJsonFile(string, playerdata);
+            GsonUtil.SaveStringToJsonFile(string, playerData);
         }
     }
 }

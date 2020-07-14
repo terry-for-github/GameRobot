@@ -10,7 +10,7 @@ import entity.CombatableEntity;
 //攻击个体实体接口
 public interface AttackSingle 
 {
-  public int AttackSingle(CombatableEntity A,CombatableEntity B);
+  public int attackSingle(CombatableEntity A,CombatableEntity B);
   
   
 }

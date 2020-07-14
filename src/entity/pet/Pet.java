@@ -3,16 +3,16 @@ package entity.pet;
 import entity.Entity;
 
 /**
- *
+ * 宠物实体类（未开发）
  * @author Administrator
  */
-
-//宠物实体类（未开发）
 public class Pet extends Entity{
-    
-    public Pet(String name, long MAXHP) 
-    {
-        super(name, MAXHP);
+    /**
+     * 
+     * @param name 名字
+     * @param maxHP 血量上限
+     */
+    public Pet(String name, long maxHP) {
+        super(name, maxHP);
     }
-    
 }
