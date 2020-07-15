@@ -1,5 +1,6 @@
 package utils;
 
+import com.sun.javafx.applet.Splash;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import map.ChunkManager;
 
 /**
  *
@@ -90,30 +92,29 @@ public class ImageUtils {
         return buffImg;
     }
 
-   /**
-	 * 图片覆盖（覆盖图压缩到width*height大小，覆盖到底图上）
-	 * 
-	 * @param baseBufferedImage 底图
-	 * @param coverBufferedImage 覆盖图
-	 * @param x 起始x轴
-	 * @param y 起始y轴
-	 * @param width 覆盖宽度
-	 * @param height 覆盖长度度
-	 * @return
-	 * @throws Exception
-	 */
-	public static BufferedImage coverImage(BufferedImage baseBufferedImage, BufferedImage coverBufferedImage, int x, int y, int width, int height) throws Exception{
-		
-		// 创建Graphics2D对象，用在底图对象上绘图
-		Graphics2D g2d = baseBufferedImage.createGraphics();
-		
-		// 绘制
-		g2d.drawImage(coverBufferedImage, x, y, 300, 300, null);
-		g2d.dispose();// 释放图形上下文使用的系统资源
-		
-		return baseBufferedImage;
-	}
+    /**
+     * 图片覆盖（覆盖图压缩到width*height大小，覆盖到底图上）
+     *
+     * @param baseBufferedImage 底图
+     * @param coverBufferedImage 覆盖图
+     * @param x 起始x轴
+     * @param y 起始y轴
+     * @param width 覆盖宽度
+     * @param height 覆盖长度度
+     * @return
+     * @throws Exception
+     */
+    public static BufferedImage coverImage(BufferedImage baseBufferedImage, BufferedImage coverBufferedImage, int x, int y, int width, int height) throws Exception {
 
+        // 创建Graphics2D对象，用在底图对象上绘图
+        Graphics2D g2d = baseBufferedImage.createGraphics();
+
+        // 绘制
+        g2d.drawImage(coverBufferedImage, x, y, 300, 300, null);
+        g2d.dispose();// 释放图形上下文使用的系统资源
+
+        return baseBufferedImage;
+    }
 
     /**
      * 待合并的两张图必须满足这样的前提，如果水平方向合并，则高度必须相等；如果是垂直方向合并，宽度必须相等。
@@ -204,54 +205,71 @@ public class ImageUtils {
         System.out.println("垂直合并完毕!");
     }
 
-    public static BufferedImage CreateLine() throws FileNotFoundException {
+    public static BufferedImage CreateLine(int x, int y, Color bgcolor, Color pencolor, int length, int width) throws FileNotFoundException {
         // 得到图片缓冲区
-        int width = 501;
-        int height = 501;
+
         int imageType = BufferedImage.TYPE_INT_BGR;
-        BufferedImage myImage = new BufferedImage(width, height, imageType);
+        BufferedImage myImage = new BufferedImage(length, width, imageType);
 
         // 得到画笔
         Graphics2D pen = (Graphics2D) myImage.getGraphics();
 
         // 设置笔的颜色,即背景色
-        pen.setColor(Color.WHITE);
+        pen.setColor(bgcolor);
 
         // 画出一个矩形
-        // 坐标x 坐标y 宽度100 长度50
-        pen.fillRect(0, 0, 510, 510);
+        //图片长宽
+        pen.fillRect(0, 0, length, width);
 
         // 字的颜色 和 背景的颜色 要不同的
-        pen.setColor(Color.blue);
+        pen.setColor(pencolor);
 
         // 划线
         // 点动成线，线动成面，面动成体
         // 两点确定一条直线
         int xStart = 0;
         int yStart = 0;
-        int xEnd = 501;
-        int yEnd = 501;
+        int xEnd = length;
+        int yEnd = width;
 
         // 设置线的宽度
         float lineWidth = 0.1F;
 
         pen.setStroke(new BasicStroke(lineWidth));
 
-        for (int i = 0; i <= 10; i++) {
-            pen.drawLine(xStart + i * 50, yStart, i * 50, yEnd);
+        for (int i = 0; i <= x; i++) {
+            pen.drawLine(xStart + i * (xEnd / x), yStart, i * (xEnd / x), yEnd);
         }
-        for (int j = 0; j <= 10; j++) {
-            pen.drawLine(xStart, yStart + j * 50, xEnd, j * 50);
-        }
-
-        try {
-            ImageIO.write(myImage, "JPEG", new FileOutputStream("line" + ".jpg"));
-
-        } catch (IOException ex) {
-            Logger.getLogger(ImageUtils.class.getName()).log(Level.SEVERE, null, ex);
+        for (int j = 0; j <= y; j++) {
+            pen.drawLine(xStart, yStart + j * (yEnd / y), xEnd, j * (yEnd / y));
         }
 
-        generateSaveFile(myImage, "C:\\Users\\Administrator\\Desktop\\Test\\3.jpg");
+        pen.setStroke(new BasicStroke(10));
+
+        //构造
+        int[][] map = ChunkManager.RandomFillMap(x, y);
+        
+        //平滑
+        for (int i = 0; i < 3; i++) {
+            ChunkManager.SmoothMap(map);
+        }
+        
+        
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] == 1) {
+                    pen.setColor(Color.blue);
+                    pen.drawLine(xStart + i * (xEnd / x), yStart + j * (yEnd / y), xStart + i * (xEnd / x) + 1, yStart + j * (yEnd / y) + 1);
+
+                } else {
+                    pen.setColor(Color.GRAY);
+                    pen.drawLine(xStart + i * (xEnd / x), yStart + j * (yEnd / y), xStart + i * (xEnd / x) + 1, yStart + j * (yEnd / y) + 1);
+
+                }
+
+            }
+        }
+
         return myImage;
     }
 

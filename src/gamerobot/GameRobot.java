@@ -8,6 +8,7 @@ import entity.player.PlayerCreater;
 import entity.player.PlayerManager;
 import gameevent.GameEvent;
 import goods.Good;
+import java.awt.Color;
 import map.Chunk;
 import map.Location;
 import utils.Initization;
@@ -40,10 +41,10 @@ import net.mamoe.mirai.utils.SystemDeviceInfoKt;
  * @author Administrator
  */
 public class GameRobot {
+
     /**
      * 主类
      */
-    
     public static boolean canRecieveFriendMessage = true;
     public static long time = 0;
 
@@ -85,16 +86,7 @@ public class GameRobot {
      * @throws Exception
      */
     public static void main(String[] args) throws InterruptedException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InstantiationException, MalformedURLException, ClassNotFoundException, Exception {
-        int[][] map=ChunkManager.RandomFillMap(500, 500);
-        ChunkManager.SmoothMap(map);
-        for(int i=0;i<map.length;i++)
-        {
-            for(int y=0;y<map[i].length;y++)
-            {
-                System.out.print(map[i][y]);
-            }
-            System.out.println("");
-        }
+       
 //        // 测试图片的叠加
 //        overlyingImageTest();
 //        // 测试图片的垂直合并
@@ -118,14 +110,14 @@ public class GameRobot {
 
         // 机器人登录
         bot.login();
-        
+
         // 私聊触发
         Events.subscribeAlways(FriendMessage.class, (FriendMessage event) -> {
             String eventContent = event.getMessage().contentToString();
             String eventKey = eventContent.split(" ")[0];
             long playerId = event.getSender().getId();
             String playerKey = String.valueOf(playerId);
-            
+
             if (canRecieveFriendMessage && gameEvents.containsKey(eventKey)) {
                 pool.submit(new Thread() {
                     @Override
@@ -149,25 +141,24 @@ public class GameRobot {
             }
         });
 
-
         // 群组消息触发
         Events.subscribeAlways(GroupMessage.class, (GroupMessage event) -> {
             String eventContent = event.getMessage().contentToString();
             String eventKey = eventContent.split(" ")[0];
             long playerId = event.getSender().getId();
             String playerKey = String.valueOf(playerId);
-            
+
             if (eventContent.equals("Test")) {
                 Image image;
                 try {
                     System.out.println("Test");
-                    image = event.getGroup().uploadImage(CreateLine());
+                    image = event.getGroup().uploadImage(CreateLine(100, 100, Color.WHITE,Color.BLACK, 1000, 1000));
                     event.getGroup().sendMessage(image);
                 } catch (FileNotFoundException ex) {
 
                 }
             }
-            
+
             if (gameEvents.containsKey(eventKey)) {
                 pool.submit(new Thread() {
                     @Override
@@ -210,6 +201,6 @@ public class GameRobot {
         });
 
         // 阻塞当前线程直到 bot 离线
-        bot.join(); 
+        bot.join();
     }
 }

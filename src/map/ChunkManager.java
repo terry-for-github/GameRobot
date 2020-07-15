@@ -2,6 +2,7 @@ package map;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  *
@@ -14,7 +15,7 @@ public class ChunkManager {
         int[][] map = new int[x][y];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                map[i][j] = (random.nextInt(101) < 50) ? 1 : 0;
+                map[i][j] = (random.nextInt(100) < 47) ? 1 : 0;
             }
         }
         return map;
