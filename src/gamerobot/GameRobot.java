@@ -25,6 +25,7 @@ import permission.PermissionGroup;
 import static utils.ImageUtils.CreateLine;
 import static utils.Initization.ReturnPath;
 import java.io.FileNotFoundException;
+import map.ChunkManager;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactoryJvm;
 import net.mamoe.mirai.japt.Events;
@@ -84,6 +85,16 @@ public class GameRobot {
      * @throws Exception
      */
     public static void main(String[] args) throws InterruptedException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, InstantiationException, MalformedURLException, ClassNotFoundException, Exception {
+        int[][] map=ChunkManager.RandomFillMap(500, 500);
+        ChunkManager.SmoothMap(map);
+        for(int i=0;i<map.length;i++)
+        {
+            for(int y=0;y<map[i].length;y++)
+            {
+                System.out.print(map[i][y]);
+            }
+            System.out.println("");
+        }
 //        // 测试图片的叠加
 //        overlyingImageTest();
 //        // 测试图片的垂直合并

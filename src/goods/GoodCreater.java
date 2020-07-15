@@ -89,6 +89,7 @@ public class GoodCreater {
     public static Map<String, Good> StringToGoods(Map<String, String> goods) {
         Map map = new HashMap<>();
         goods.entrySet().forEach(entry -> {
+
             Consumables consumables = new Consumables("无", "无");
             Armor armor = new Armor("无", "无");
             JSONObject json = JSONObject.parseObject(JSON.toJSONString(entry.getValue()));
