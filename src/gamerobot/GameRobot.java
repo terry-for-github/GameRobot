@@ -152,7 +152,7 @@ public class GameRobot {
                 Image image;
                 try {
                     System.out.println("Test");
-                    image = event.getGroup().uploadImage(CreateLine(100, 100, Color.WHITE,Color.BLACK, 1000, 1000));
+                    image = event.getGroup().uploadImage(CreateLine(100, 100, Color.WHITE,Color.BLACK, 2000, 2000));
                     event.getGroup().sendMessage(image);
                 } catch (FileNotFoundException ex) {
 

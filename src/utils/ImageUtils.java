@@ -244,29 +244,34 @@ public class ImageUtils {
             pen.drawLine(xStart, yStart + j * (yEnd / y), xEnd, j * (yEnd / y));
         }
 
-        pen.setStroke(new BasicStroke(10));
+        pen.setStroke(new BasicStroke(length / 100));
 
         //构造
         int[][] map = ChunkManager.RandomFillMap(x, y);
-        
+
         //平滑
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             ChunkManager.SmoothMap(map);
         }
-        
-        
+
+        //制造沙滩
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                 ChunkManager.GetsandWalls(map,i,j);
+            }
+        }
+       
+
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 1) {
                     pen.setColor(Color.blue);
                     pen.drawLine(xStart + i * (xEnd / x), yStart + j * (yEnd / y), xStart + i * (xEnd / x) + 1, yStart + j * (yEnd / y) + 1);
 
-                } else {
+                } else if (map[i][j] == 0) {
                     pen.setColor(Color.GRAY);
                     pen.drawLine(xStart + i * (xEnd / x), yStart + j * (yEnd / y), xStart + i * (xEnd / x) + 1, yStart + j * (yEnd / y) + 1);
-
                 }
-
             }
         }
 
