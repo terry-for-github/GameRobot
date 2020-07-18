@@ -3,24 +3,32 @@ package goods.consumables;
 import goods.Good;
 
 /**
- *
+ * 消耗品
  * @author Administrator
  */
-//消耗品
 public class Consumables extends Good implements Cloneable {
-
+    /**
+     * 消耗品
+     * @param name 名字
+     * @param use 用途
+     */
     public Consumables(String name, String use) {
         super(name, "消耗品", use);
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
-    public Good clone() {
-        Consumables consumables = null;
-        consumables = (Consumables) super.clone();
-        return consumables;
+    public Good clone() throws CloneNotSupportedException {
+        return (Consumables) super.clone();
     }
-
-    public void Use() {
+    
+    /**
+     * 使用
+     */
+    public void use() {
 
     }
 }

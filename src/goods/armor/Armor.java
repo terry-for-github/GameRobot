@@ -4,35 +4,41 @@ import goods.Good;
 import java.util.UUID;
 
 /**
- *
+ * 装甲类
  * @author Administrator
  */
-//装甲类
 public class Armor extends Good implements Cloneable {
+    private ArmorType armorType;    // 装甲种类
+    private UUID uuid;              // 唯一标识符
+    //属性加成
+    private long ATK = 0;           // 攻击力
+    private long DEF = 0;           // 防御力
+    private long MATK = 0;          // 施法强度
+    private long MDEF = 0;          // 魔法防御
+    private double ASPD = 0;        // 攻击速度
+    private double DSPD = 0;        // 施法速度
+    private long strength = 0;      // 力量
+    private long agile = 0;         // 敏捷
+    private long wisdom = 0;        // 智慧
 
-    private ArmorType armortype;//装甲种类
-    private UUID uuid;//唯一标识符
-    private long ATK = 0;//属性加成
-    private long DEF = 0;
-    private long MATK = 0;
-    private long MDEF = 0;
-    private double ASPD = 0;
-    private double DSPD = 0;
-    private long strength = 0;
-    private long agile = 0;
-    private long wisdom = 0;
-
+    /**
+     * 装甲
+     * @param name 名字
+     * @param use 用途
+     */
     public Armor(String name, String use) {
         super(name, "装备", use);
         this.uuid = UUID.randomUUID();
         this.setName(name + uuid.toString().substring(uuid.toString().length() - 4, uuid.toString().length()));
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @Override
-    public Good clone() {
-        Armor armor = null;
-        armor = (Armor) super.clone();
-        return armor;
+    public Good clone() throws CloneNotSupportedException {
+        return (Armor) super.clone();
     }
 
     /**
@@ -176,17 +182,17 @@ public class Armor extends Good implements Cloneable {
     }
 
     /**
-     * @return the armortype
+     * @return the armorType
      */
-    public ArmorType getArmortype() {
-        return armortype;
+    public ArmorType getArmorType() {
+        return armorType;
     }
 
     /**
-     * @param armortype the armortype to set
+     * @param armorType the armorType to set
      */
-    public void setArmortype(ArmorType armortype) {
-        this.armortype = armortype;
+    public void setArmorType(ArmorType armorType) {
+        this.armorType = armorType;
     }
 
 }

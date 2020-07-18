@@ -7,55 +7,74 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 权限组
  * @author Administrator
  */
 public abstract class PermissionGroup {
+    private String name;                // 权限组名称
+    private Map<Long, String> members;  // 该权限组成员
+    private Map<String, String> events; // 事件
 
-    private String name;
-    private Map<Long, String> members;
-    private Map<String, String> events;
-
+    /**
+     * 
+     * @param name 名称
+     */
     public PermissionGroup(String name) {
         this.name = name;
         this.events = new HashMap();
         this.members = new HashMap();
     }
 
-    public void AddEvent(GameEvent event) {
+    /**
+     * 添加事件
+     * @param event 事件
+     */
+    public void addEvent(GameEvent event) {
         if (!this.events.containsKey(event.getMessage())) {
             this.getEvents().put(event.getMessage(), event.getMessage());
-            for (Map.Entry<Long, String> entry : members.entrySet()) {
-                event.AddPermission(GameRobot.players.get(entry.getValue()));
-            }
+            members.entrySet().forEach(entry -> {
+                event.addPermission(GameRobot.players.get(entry.getValue()));
+            });
         }
     }
 
+    /**
+     * 移除事件
+     * @param event 事件
+     */
     public void RemoveEvent(GameEvent event) {
         if (this.getEvents().containsKey(event.getMessage())) {
             this.getEvents().remove(event.getMessage(), event);
-            for (Map.Entry<Long, String> entry : members.entrySet()) {
-                event.RemvoePermission(GameRobot.players.get(entry.getValue()));
-            }
+            members.entrySet().forEach(entry -> {
+                event.removePermission(GameRobot.players.get(entry.getValue()));
+            });
         }
     }
 
-    public void AddMember(Player player) {
+    /**
+     * 添加成员
+     * @param player 玩家
+     */
+    public void addMember(Player player) {
         if (!this.members.containsValue(player.getName())) {
             this.getMembers().put(Long.valueOf(player.getName()), player.getName());
             for (Map.Entry<String, String> entry : this.events.entrySet()) {
-                GameRobot.gameEvents.get(entry.getKey()).AddPermission(GameRobot.players.get(entry.getValue()));
+                GameRobot.gameEvents.get(entry.getKey()).addPermission(GameRobot.players.get(entry.getValue()));
             }
 
         }
     }
 
-    public void RemvoeMember(Player player) {
+    /**
+     * 移除成员
+     * @param player 玩家
+     */
+    public void removeMember(Player player) {
         if (this.getMembers().containsValue(player.getName())) {
             this.getMembers().remove(Long.valueOf(player.getName()), player.getName());
-            for (Map.Entry<String, String> entry : this.events.entrySet()) {
-                GameRobot.gameEvents.get(entry.getKey()).RemvoePermission(GameRobot.players.get(entry.getValue()));
-            }
+            this.events.entrySet().forEach(entry -> {
+                GameRobot.gameEvents.get(entry.getKey()).removePermission(GameRobot.players.get(entry.getValue()));
+            });
         }
     }
 

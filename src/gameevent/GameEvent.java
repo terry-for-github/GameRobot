@@ -7,36 +7,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 游戏事件
  * @author Administrator
  */
 //事件
 public abstract class GameEvent {
+    private String message;                                 // 事件触发关键字
+    private boolean isOpen = true;                          // 是否开启
+    private boolean open = true;                            // 是否所有人都能用
+    private Map<Long, Boolean> permissions = new HashMap(); // 权限  对应的Long是玩家的QQ号
 
-    private String message;//事件触发关键字
-    private boolean isopen = true;//是否开启
-    private boolean open = true;//是否所有人都能用
-    private Map<Long, Boolean> permissions = new HashMap();//权限  对应的Long是玩家的QQ号
-
+    /**
+     * 
+     * @param message 事件消息
+     */
     public GameEvent(String message) {
         this.message = message;
         GameRobot.gameEvents.put(message, this);
     }
     
-    //添加此事件权限
-    public void AddPermission(Player player) {
+    /**
+     * 添加此事件权限
+     * @param player 玩家
+     */
+    public void addPermission(Player player) {
         if (!permissions.containsKey(Long.valueOf(player.getName()))) {
             getPermissions().put(Long.valueOf(player.getName()), Boolean.TRUE);
         }
     }
     
-    //移除此事件权限
-    public void RemvoePermission(Player player) {
+    /**
+     * 移除此事件权限
+     * @param player 玩家
+     */
+    public void removePermission(Player player) {
         if (getPermissions().containsKey(Long.valueOf(player.getName()))) {
             getPermissions().put(Long.valueOf(player.getName()), Boolean.FALSE);
         }
     }
     
+    // TODO 要改
     //五种触发方式（可适当更改）
     public void Do(Player player) {
 
@@ -90,14 +100,14 @@ public abstract class GameEvent {
      * @return the isopen
      */
     public boolean isIsopen() {
-        return isopen;
+        return isOpen;
     }
 
     /**
      * @param isopen the isopen to set
      */
     public void setIsopen(boolean isopen) {
-        this.isopen = isopen;
+        this.isOpen = isopen;
     }
 
     /**

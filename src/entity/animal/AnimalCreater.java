@@ -1,7 +1,6 @@
 package entity.animal;
 
 import utils.GsonUtil;
-import static utils.GsonUtil.GetStringFromObject;
 import static utils.Initization.ReturnPath;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import static utils.GsonUtil.getStringFromObject;
 
 /**
  * 创造动物
@@ -46,13 +46,9 @@ public class AnimalCreater {
      */
     public static void saveAnimalToFile(Animal animal) throws IOException {
         File playerData = new File(ReturnPath() + "/Main/Entity/Animals/" + animal.getName() + ".json");
-        if (playerData.exists()) {
-            String string = GetStringFromObject(animal);
-            GsonUtil.SaveStringToJsonFile(string, playerData);
-        } else {
+        if (!playerData.exists()) {
             playerData.createNewFile();
-            String string = GetStringFromObject(animal);
-            GsonUtil.SaveStringToJsonFile(string, playerData);
         }
+        GsonUtil.saveStringToJsonFile(getStringFromObject(animal), playerData);
     }
 }

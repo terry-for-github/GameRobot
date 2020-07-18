@@ -83,11 +83,11 @@ public class Player extends CombatableEntity implements Cloneable, AttackSingle,
      */
     @Override
     public void equip(Armor armor) {
-        if (equip.containsKey(armor.getArmortype().toString())) {
-            store.put(equip.get(armor.getArmortype().toString()).getName(), equip.get(armor.getArmortype().toString()));
-            equip.put(armor.getArmortype().toString(), armor);
+        if (equip.containsKey(armor.getArmorType().toString())) {
+            store.put(equip.get(armor.getArmorType().toString()).getName(), equip.get(armor.getArmorType().toString()));
+            equip.put(armor.getArmorType().toString(), armor);
         } else {
-            equip.put(armor.getArmortype().toString(), armor);
+            equip.put(armor.getArmorType().toString(), armor);
         }
     }
 

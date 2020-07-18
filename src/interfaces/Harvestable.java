@@ -3,11 +3,9 @@ package interfaces;
 import entity.player.Player;
 
 /**
- *
+ * 可收获
  * @author Administrator
  */
-
-//可收获
 public interface Harvestable {
     public abstract void harvest(Player player);
 }

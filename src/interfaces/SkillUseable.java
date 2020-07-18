@@ -1,11 +1,9 @@
 package interfaces;
 
 /**
- *
+ * 可使用技能
  * @author Administrator
  */
-
-//可使用技能
 public interface SkillUseable {
-    public void UseSkill();
+    public void useSkill();
 }

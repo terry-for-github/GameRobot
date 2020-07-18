@@ -1,17 +1,16 @@
 package goods;
 
-import entity.player.Player;
-
 /**
- *
+ * 管理货物
  * @author Administrator
  */
 public class GoodManager {
-
-
-
-    public static void EquipBroke() {
+    private GoodManager() {}
+    
+    /**
+     * 
+     */
+    public static void equipBroke() {
 
     }
-
 }

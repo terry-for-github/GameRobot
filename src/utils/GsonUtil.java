@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,21 +15,29 @@ import java.util.logging.Logger;
 import static javafx.scene.input.KeyCode.SPACE;
 
 /**
- *
+ * Gson工具
  * @author tank
  */
 public class GsonUtil {
-
-    public static String GetStringFromObject(Object player) {
+    /**
+     * 从对象里获得字符串
+     * @param player
+     * @return 
+     */
+    public static String getStringFromObject(Object player) {
         Gson gson = new Gson();
         String string = gson.toJson(player);
         return string;
     }
 
-    public static void SaveStringToJsonFile(String string, File file) {
-        Writer write;
+    /**
+     * 将字符串保存到文件
+     * @param string 要保存的字符串
+     * @param file 文件
+     */
+    public static void saveStringToJsonFile(String string, File file) {
         try {
-            write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             write.write(string);
             write.flush();
             write.close();
@@ -41,8 +48,13 @@ public class GsonUtil {
         }
     }
 
+    /**
+     * 格式化Json
+     * @param json json字符串
+     * @return 返回格式化后的字符串
+     */
     public static String formatJson(String json) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         int length = json.length();
         int number = 0;
         char key = 0;
@@ -55,7 +67,7 @@ public class GsonUtil {
             // 2、如果当前字符是前方括号、前花括号做如下处理：
             if ((key == '[') || (key == '{')) {
                 // （1）如果前面还有字符，并且字符为“：”，打印：换行和缩进字符字符串。
-                if ((i - 1 > 0) && (json.charAt(i - 1) == ':')) {
+                if ((i - 1 >= 0) && (json.charAt(i - 1) == ':')) {
                     result.append('\n');
                     result.append(indent(number));
                 }
@@ -110,33 +122,35 @@ public class GsonUtil {
         return result.toString();
     }
 
+    /**
+     * 缩进number个空格
+     * @param number 要添加的空格的数量
+     * @return 返回添加缩进后的字符串
+     */
     private static String indent(int number) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < number; i++) {
             result.append(SPACE);
         }
         return result.toString();
     }
 
-    public static String readJsonFile(String fileName) {
-        String jsonStr = "";
-        try {
-            File jsonFile = new File(fileName);
-            FileReader fileReader = new FileReader(jsonFile);
-            Reader reader = new InputStreamReader(new FileInputStream(jsonFile), "utf-8");
-            int ch = 0;
-            StringBuffer sb = new StringBuffer();
+    /**
+     * 从指定路径读取json文件
+     * @param fileName 文件名
+     * @return 返回读取后的json字符串
+     * @throws java.io.IOException
+     */
+    public static String readJsonFile(String fileName) throws IOException {
+        File jsonFile = new File(fileName);
+        StringBuilder sb;
+        try (Reader reader = new InputStreamReader(new FileInputStream(jsonFile), "utf-8")) {
+            int ch;
+            sb = new StringBuilder();
             while ((ch = reader.read()) != -1) {
                 sb.append((char) ch);
             }
-            fileReader.close();
-            reader.close();
-            jsonStr = sb.toString();
-            return jsonStr;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
+        return sb.toString();
     }
-
 }

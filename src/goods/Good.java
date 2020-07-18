@@ -1,33 +1,38 @@
 package goods;
 
 /**
- *
+ * 货物
  * @author Administrator
  */
 public abstract class Good implements Cloneable {
+    private int number;     // 数量
+    private String type;    // 种类
+    private String use;     // 用途（描述？）description
+    private String name;    // 名称
 
-    private int number;//数量
-    private String type;//种类
-    private String use;//用途（描述？）
-    private String name;//名称
-
+    /**
+     * 货物
+     * @param name 名字
+     * @param type 类型
+     * @param use  使用
+     */
     public Good(String name, String type, String use) {
         this.name = name;
         this.type = type;
         this.use = use;
         this.number = 1;
     }
+    
+    /**
+     * 
+     * @return
+     * @throws CloneNotSupportedException 
+     */
      @Override
-    public Good clone() {
-        Good good = null;
-        try {
-            good = (Good) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        return good;
+    public Good clone() throws CloneNotSupportedException {
+        return (Good)super.clone();
     }
+    
     /**
      * @return the number
      */
@@ -83,5 +88,4 @@ public abstract class Good implements Cloneable {
     public void setUse(String use) {
         this.use = use;
     }
-
 }

@@ -51,7 +51,6 @@ public class Initization {
     public static Random random=new Random();//随机器 用来取随机数
     static Timer timer = new Timer();
     static Timer time = new Timer();
-    static PermissionManager permissionmanager = new PermissionManager();
 
     public static void Initization() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IllegalArgumentException, IllegalArgumentException, Exception {
 
@@ -109,8 +108,8 @@ public class Initization {
 
         } else {
             GameRobot.groups.put("所有者", new AdminGroup());
-            GameRobot.groups.get("所有者").setEvents(permissionmanager.GetEvents(Admingroup));
-            GameRobot.groups.get("所有者").setMembers(permissionmanager.GetMembers(Admingroup));
+            GameRobot.groups.get("所有者").setEvents(PermissionManager.getEvents(Admingroup));
+            GameRobot.groups.get("所有者").setMembers(PermissionManager.getMembers(Admingroup));
 //            System.out.println("所有者是");
 //            for (Map.Entry<Long, String> entry : GameRobot.groups.get("所有者").getMembers().entrySet()) {
 //                System.out.println(entry.getKey());
@@ -122,24 +121,24 @@ public class Initization {
             GameRobot.groups.put("用户", new UserGroup());
         } else {
             GameRobot.groups.put("用户", new UserGroup());
-            GameRobot.groups.get("用户").setEvents(permissionmanager.GetEvents(Usergroup));
-            GameRobot.groups.get("用户").setMembers(permissionmanager.GetMembers(Usergroup));
+            GameRobot.groups.get("用户").setEvents(PermissionManager.getEvents(Usergroup));
+            GameRobot.groups.get("用户").setMembers(PermissionManager.getMembers(Usergroup));
         }
         if (!OPgroup.exists()) {
             OPgroup.createNewFile();
             GameRobot.groups.put("管理员", new OpGroup());
         } else {
             GameRobot.groups.put("管理员", new OpGroup());
-            GameRobot.groups.get("管理员").setEvents(permissionmanager.GetEvents(OPgroup));
-            GameRobot.groups.get("管理员").setMembers(permissionmanager.GetMembers(OPgroup));
+            GameRobot.groups.get("管理员").setEvents(PermissionManager.getEvents(OPgroup));
+            GameRobot.groups.get("管理员").setMembers(PermissionManager.getMembers(OPgroup));
         }
         if (!BlackListgroup.exists()) {
             BlackListgroup.createNewFile();
             GameRobot.groups.put("黑名单", new BlackListGroup());
         } else {
             GameRobot.groups.put("黑名单", new BlackListGroup());
-            GameRobot.groups.get("黑名单").setEvents(permissionmanager.GetEvents(BlackListgroup));
-            GameRobot.groups.get("黑名单").setMembers(permissionmanager.GetMembers(BlackListgroup));
+            GameRobot.groups.get("黑名单").setEvents(PermissionManager.getEvents(BlackListgroup));
+            GameRobot.groups.get("黑名单").setMembers(PermissionManager.getMembers(BlackListgroup));
         }
 
         //游戏时刻读取并且开始轮转
@@ -179,7 +178,7 @@ public class Initization {
                 //遍历File[]数组
                 if (!s.isDirectory()) {
                     System.out.println("       " + "正在初始化物品  " + s.getName());
-                    good = GoodCreater.GetGoodFromFile(s.getPath());
+                    good = GoodCreater.getGoodFromFile(s.getPath());
                     GameRobot.goods.put(good.getName(), good);
                 }
             }
@@ -280,14 +279,14 @@ public class Initization {
             File thepermission = new File(Permission.getPath() + "/" + entry.getValue().getMessage() + ".json");
             System.out.print("正在加载  " + entry.getValue().getMessage() + "  权限\n");
             if (new File(Permission.getPath() + "/" + entry.getValue().getMessage()).exists()) {
-                entry.getValue().setIsopen(permissionmanager.GetIsOpen(thepermission));
-                entry.getValue().setPermissions(permissionmanager.GetPermission(thepermission));
-                entry.getValue().setOpen(permissionmanager.GetOpen(thepermission));
+                entry.getValue().setIsopen(PermissionManager.getIsOpen(thepermission));
+                entry.getValue().setPermissions(PermissionManager.getPermission(thepermission));
+                entry.getValue().setOpen(PermissionManager.getOpen(thepermission));
             } else {
                 entry.getValue().setIsopen(true);
                 entry.getValue().setOpen(false);
                 entry.getValue().setPermissions(new HashMap<>());
-                permissionmanager.SavePerMission(entry.getValue(), thepermission);
+                PermissionManager.savePerMission(entry.getValue(), thepermission);
             }
         }
         System.out.print("======================加载权限完毕======================\n");
@@ -317,8 +316,8 @@ public class Initization {
                     Player player;
                     try {
                         player = ((Player) entry.getValue()).clone();
-                        PlayerManager.SavePlayerToFile(Long.valueOf(player.getName()), player);
-                    } catch (CloneNotSupportedException ex) {
+                        PlayerCreater.savePlayerToFile(Long.valueOf(player.getName()), player);
+                    } catch (IOException | CloneNotSupportedException ex) {
                         Logger.getLogger(Initization.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
@@ -329,12 +328,12 @@ public class Initization {
                     File thepermission = new File(Permission.getPath() + "/" + entry.getValue().getMessage() + ".json");
                     System.out.print("正在保存" + entry.getValue().getMessage() + "  权限\n");
                     if (new File(Permission.getPath() + "/" + entry.getValue().getMessage() + ".json").exists()) {
-                        permissionmanager.SavePerMission(entry.getValue(), thepermission);
+                        PermissionManager.savePerMission(entry.getValue(), thepermission);
                     }
                 }
                 for (Map.Entry<String, PermissionGroup> entry : GameRobot.groups.entrySet()) {
                     File thegroup = new File(ReturnPath() + "/Main/Permission/" + entry.getKey() + ".json");
-                    permissionmanager.SaveGroup(entry.getValue(), thegroup);
+                    PermissionManager.saveGroup(entry.getValue(), thegroup);
                 }
 
                 System.out.print("===========保存权限与权限组完毕=========\n");
@@ -388,7 +387,7 @@ public class Initization {
         }, 10000L, 600000L);
     }
 
-    public static void Reload() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IllegalArgumentException, Exception {
+    public static void reload() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IllegalArgumentException, Exception {
         time.cancel();
         timer.cancel();
         SaveAll();

@@ -26,7 +26,6 @@ import permission.PermissionGroup;
 import static utils.ImageUtils.CreateLine;
 import static utils.Initization.ReturnPath;
 import java.io.FileNotFoundException;
-import map.ChunkManager;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactoryJvm;
 import net.mamoe.mirai.japt.Events;
@@ -122,7 +121,7 @@ public class GameRobot {
                 pool.submit(new Thread() {
                     @Override
                     public void run() {
-                        if (!PlayerManager.ExistThisPlayer(event.getSender())) {
+                        if (!PlayerManager.existThisPlayer(event.getSender())) {
                             try {
                                 PlayerCreater.createPlayer(playerId);
                             } catch (IOException ex) {
@@ -163,7 +162,7 @@ public class GameRobot {
                 pool.submit(new Thread() {
                     @Override
                     public void run() {
-                        if (!PlayerManager.ExistThisPlayer(event.getSender())) {
+                        if (!PlayerManager.existThisPlayer(event.getSender())) {
                             try {
                                 PlayerCreater.createPlayer(playerId);
                             } catch (IOException ex) {

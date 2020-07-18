@@ -247,17 +247,17 @@ public class ImageUtils {
         pen.setStroke(new BasicStroke(length / 100));
 
         //构造
-        int[][] map = ChunkManager.RandomFillMap(x, y);
+        int[][] map = ChunkManager.randomFillMap(x, y);
 
         //平滑
         for (int i = 0; i < 4; i++) {
-            ChunkManager.SmoothMap(map);
+            ChunkManager.smoothMap(map);
         }
 
         //制造沙滩
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                 ChunkManager.GetsandWalls(map,i,j);
+                 ChunkManager.getsandWalls(map,i,j);
             }
         }
        

@@ -1,11 +1,9 @@
 package interfaces;
 
 /**
- *
+ * 添加BUFF接口
  * @author Administrator
  */
-
-//添加BUFF接口
 public interface BuffAddable {
 //    public void AddBuff(Buff buff);
 }

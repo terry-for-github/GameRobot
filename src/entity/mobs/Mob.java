@@ -46,7 +46,7 @@ public class Mob extends CombatableEntity implements Cloneable, AttackSingle, Bu
      */
     @Override
     public void equip(Armor armor){
-         equip.put(armor.getArmortype().toString(), armor);
+         equip.put(armor.getArmorType().toString(), armor);
     }
     
     /**
