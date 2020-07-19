@@ -8,14 +8,18 @@ import interfaces.Hungerable;
 import static gamerobot.GameRobot.goods;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 植物
+ *
  * @author Administrator
  */
 public class Plant extends SlaughterableEntity implements Growable, Harvestable, Hungerable, Cloneable {
+
     /**
-     * 
+     *
      * @param name 名字
      * @param maxHP 血量上限
      * @param times 可收获次数
@@ -26,9 +30,8 @@ public class Plant extends SlaughterableEntity implements Growable, Harvestable,
     }
 
     /**
-     * 
-     * @return
-     * @throws CloneNotSupportedException 
+     *
+     * @return @throws CloneNotSupportedException
      */
     @Override
     public Plant clone() throws CloneNotSupportedException {
@@ -47,12 +50,17 @@ public class Plant extends SlaughterableEntity implements Growable, Harvestable,
 
     /**
      * 玩家收获作物
+     *
      * @param player 玩家
      */
     @Override
     public void harvest(Player player) {
         for (Map.Entry<String, Integer> entry : this.getGoods().entrySet()) {
-            player.playerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
+            try {
+                player.playerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
+            } catch (CloneNotSupportedException ex) {
+                Logger.getLogger(Plant.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }

@@ -24,7 +24,7 @@ public class MobCreater {
      * @param filepath 文件路径
      * @return 怪物
      */
-    public static Mob getMobFromFile(String filepath) {
+    public static Mob getMobFromFile(String filepath) throws IOException {
         String message = GsonUtil.readJsonFile(filepath);
         JSONObject jobj = JSON.parseObject(message);
         String name = jobj.getString("name");

@@ -7,6 +7,7 @@ package map;
 public class Location {
     private int x;  // x坐标
     private int y;  // y坐标
+    private boolean hasBeenChecked=false;
    
     /**
      * 

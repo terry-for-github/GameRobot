@@ -9,25 +9,29 @@ import static gamerobot.GameRobot.goods;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 动物实体类
+ *
  * @author Administrator
  */
 public class Animal extends SlaughterableEntity implements Growable, Harvestable, Hungerable, Cloneable {
+
     private Map<String, Integer> forage = new HashMap<>();  // 饲料
-    
+
     /**
-     * 
+     *
      * @param name 名字
      * @param maxHP 血量上限
      * @param times 可以收获的次数
-     * @param maxAge  最大成长度
+     * @param maxAge 最大成长度
      */
     public Animal(String name, long maxHP, int times, int maxAge) {
         super(name, maxHP, times, maxAge);
     }
-    
+
     /**
      * @return the forage
      */
@@ -41,11 +45,10 @@ public class Animal extends SlaughterableEntity implements Growable, Harvestable
     public void setForage(Map<String, Integer> forage) {
         this.forage = forage;
     }
-    
+
     /**
-     * 
-     * @return
-     * @throws CloneNotSupportedException 
+     *
+     * @return @throws CloneNotSupportedException
      */
     @Override
     public Animal clone() throws CloneNotSupportedException {
@@ -53,7 +56,7 @@ public class Animal extends SlaughterableEntity implements Growable, Harvestable
         plant.setUuid(UUID.randomUUID());
         return plant;
     }
-    
+
     /**
      * 生长
      */
@@ -61,18 +64,23 @@ public class Animal extends SlaughterableEntity implements Growable, Harvestable
     public void grow() {
         this.setAge(this.getAge() + 100);
     }
-    
+
     /**
      * 被玩家收获
-     * @param player 玩家 
+     *
+     * @param player 玩家
      */
     @Override
     public void harvest(Player player) {
         for (Map.Entry<String, Integer> entry : this.getGoods().entrySet()) {
-            player.playerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
+            try {
+                player.playerAddGood(goods.get(entry.getKey()).clone(), entry.getValue());
+            } catch (CloneNotSupportedException ex) {
+                Logger.getLogger(Animal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
-    
+
     /**
      * 当饥饿时会发生的事件
      */

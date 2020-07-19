@@ -25,7 +25,7 @@ public class PlayerCreater {
      * @param filepath 文件路径
      * @return 玩家
      */
-    public static Player getPlayerFromFile(String filepath) {
+    public static Player getPlayerFromFile(String filepath) throws IOException {
         String message = GsonUtil.readJsonFile(filepath);
         JSONObject jobj = JSON.parseObject(message);
         

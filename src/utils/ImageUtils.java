@@ -15,7 +15,13 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import map.Chunk;
 import map.ChunkManager;
+import map.forestboime.ForestChunk;
+import map.forestboime.HillChunk;
+import map.forestboime.OceanChunk;
+import map.forestboime.PlainChunk;
+import map.forestboime.RiverChunk;
 
 /**
  *
@@ -108,9 +114,8 @@ public class ImageUtils {
 
         // 创建Graphics2D对象，用在底图对象上绘图
         Graphics2D g2d = baseBufferedImage.createGraphics();
-
         // 绘制
-        g2d.drawImage(coverBufferedImage, x, y, 300, 300, null);
+        g2d.drawImage(coverBufferedImage, x, y, width, height, null);
         g2d.dispose();// 释放图形上下文使用的系统资源
 
         return baseBufferedImage;
@@ -206,8 +211,10 @@ public class ImageUtils {
     }
 
     public static BufferedImage CreateLine(int x, int y, Color bgcolor, Color pencolor, int length, int width) throws FileNotFoundException {
-        // 得到图片缓冲区
 
+        ChunkManager chunkManager = new ChunkManager();
+
+        // 得到图片缓冲区
         int imageType = BufferedImage.TYPE_INT_BGR;
         BufferedImage myImage = new BufferedImage(length, width, imageType);
 
@@ -235,44 +242,60 @@ public class ImageUtils {
         // 设置线的宽度
         float lineWidth = 0.1F;
 
-        pen.setStroke(new BasicStroke(lineWidth));
+        //构造
+        Chunk[][] map = chunkManager.randomFillMap(x, y);
 
+        //平滑
+        for (int i = 0; i < 4; i++) {
+            chunkManager.smoothMap(map);
+        }
+        //去除过小的湖泊
+        chunkManager.deleteTooMuchLake(map);
+        //判断河流
+//        chunkManager.getRiver(map);
+
+        //        制造沙滩
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                chunkManager.getsandWalls(map, i, j);
+            }
+        }
+
+        //制造山丘
+        chunkManager.getHill(map);
+        //平滑山丘
+        for (int i = 0; i < 4; i++) {
+            chunkManager.smoothPlainMap(map);
+        }
+        //画出海洋大陆沙滩
+        pen.setStroke(new BasicStroke(length / x));
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] instanceof OceanChunk) {
+                    pen.setColor(Color.blue);
+                    pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
+
+                } else if (map[i][j] instanceof PlainChunk) {
+                    pen.setColor(Color.GRAY);
+                    pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
+                } else if (map[i][j] instanceof RiverChunk) {
+                    pen.setColor(Color.YELLOW);
+                    pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
+                } else if (map[i][j] instanceof HillChunk) {
+                    pen.setColor(Color.ORANGE);
+                    pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
+                }
+            }
+        }
+
+        //画表格线
+        pen.setColor(Color.BLACK);
+        pen.setStroke(new BasicStroke(lineWidth));
         for (int i = 0; i <= x; i++) {
             pen.drawLine(xStart + i * (xEnd / x), yStart, i * (xEnd / x), yEnd);
         }
         for (int j = 0; j <= y; j++) {
             pen.drawLine(xStart, yStart + j * (yEnd / y), xEnd, j * (yEnd / y));
-        }
-
-        pen.setStroke(new BasicStroke(length / 100));
-
-        //构造
-        int[][] map = ChunkManager.randomFillMap(x, y);
-
-        //平滑
-        for (int i = 0; i < 4; i++) {
-            ChunkManager.smoothMap(map);
-        }
-
-        //制造沙滩
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                 ChunkManager.getsandWalls(map,i,j);
-            }
-        }
-       
-
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (map[i][j] == 1) {
-                    pen.setColor(Color.blue);
-                    pen.drawLine(xStart + i * (xEnd / x), yStart + j * (yEnd / y), xStart + i * (xEnd / x) + 1, yStart + j * (yEnd / y) + 1);
-
-                } else if (map[i][j] == 0) {
-                    pen.setColor(Color.GRAY);
-                    pen.drawLine(xStart + i * (xEnd / x), yStart + j * (yEnd / y), xStart + i * (xEnd / x) + 1, yStart + j * (yEnd / y) + 1);
-                }
-            }
         }
 
         return myImage;

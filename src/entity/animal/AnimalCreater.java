@@ -23,7 +23,7 @@ public class AnimalCreater {
      * @param filepath 文件路径
      * @return 动物
      */
-    public static Animal getAnimalFromFile(String filepath) {
+    public static Animal getAnimalFromFile(String filepath) throws IOException {
         String message = GsonUtil.readJsonFile(filepath);
         JSONObject jobj = JSON.parseObject(message);
         Animal animal = new Animal("无", 1, 1, 1);

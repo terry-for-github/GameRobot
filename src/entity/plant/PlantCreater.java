@@ -22,7 +22,7 @@ public class PlantCreater {
      * @param filepath 文件路径
      * @return 植物
      */
-    public static Plant getPlantFromFile(String filepath) {
+    public static Plant getPlantFromFile(String filepath) throws IOException {
         String message = GsonUtil.readJsonFile(filepath);
         JSONObject jobj = JSON.parseObject(message);
         Plant plant = new Plant("无", 1, 1, 1);

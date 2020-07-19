@@ -27,7 +27,7 @@ public class GoodCreater {
      * @param filepath 文件路径
      * @return 货物
      */
-    public static Good getGoodFromFile(String filepath) {
+    public static Good getGoodFromFile(String filepath) throws IOException {
         String message = GsonUtil.readJsonFile(filepath);
         JSONObject jobj = JSON.parseObject(message);
         Consumables consumables = new Consumables("无", "无");

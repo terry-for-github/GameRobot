@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -15,13 +16,13 @@ import java.util.Map;
 public class PermissionManager {
     private PermissionManager() {}
 
-    public static Map<String, String> getEvents(File file) {
+    public static Map<String, String> getEvents(File file) throws IOException {
         String message = GsonUtil.readJsonFile(file.getPath());
         JSONObject jobj = JSON.parseObject(message);
         return ((Map<String, String>) jobj.get("events"));
     }
 
-    public static Map<Long, String> getMembers(File file) {
+    public static Map<Long, String> getMembers(File file) throws IOException {
         String message = GsonUtil.readJsonFile(file.getPath());
         JSONObject jobj = JSON.parseObject(message);
         return ((Map<Long, String>)jobj.get("members"));
@@ -33,21 +34,21 @@ public class PermissionManager {
         GsonUtil.saveStringToJsonFile(string, file);
     }
 
-    public static Map<Long, Boolean> getPermission(File file) {
+    public static Map<Long, Boolean> getPermission(File file) throws IOException {
         String message = GsonUtil.readJsonFile(file.getPath());
         JSONObject jobj = JSON.parseObject(message);
         Map<Long, Boolean> map = (Map<Long, Boolean>) jobj.get("permissions");
         return map;
     }
 
-    public static Boolean getIsOpen(File file) {
+    public static Boolean getIsOpen(File file) throws IOException {
         String message = GsonUtil.readJsonFile(file.getPath());
         JSONObject jobj = JSON.parseObject(message);
         boolean flag = jobj.getBoolean("isopen");
         return flag;
     }
 
-    public static Boolean getOpen(File file) {
+    public static Boolean getOpen(File file) throws IOException {
         String message = GsonUtil.readJsonFile(file.getPath());
         JSONObject jobj = JSON.parseObject(message);
         boolean flag = jobj.getBoolean("open");
