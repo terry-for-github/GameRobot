@@ -1,9 +1,7 @@
 package map;
 
-import map.forestboime.RiverChunk;
 import java.util.Date;
 import java.util.Random;
-import map.forestboime.ForestChunk;
 import map.forestboime.HillChunk;
 import map.forestboime.OceanChunk;
 import map.forestboime.PlainChunk;
@@ -168,24 +166,17 @@ public class ChunkManager {
                     }
                 }
             }
-
-        } else {
-            return;
         }
-
     }
 
     //删除小于某个大小的湖泊
     public void deleteTooMuchLake(Chunk[][] map) {
+        boolean[][] vis = new boolean[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if (!map[i][j].hasBeenChecked) {
-                    int x = checkHasWater(map, i, j);
-                    if (x > 40 && x < 500) {
-                        DeleteWater(map, i, j);
-                    } else if (x < 25) {
-                        DeleteWater(map, i, j);
-                    }
+                int x = checkHasWater(map, vis, i, j);
+                if ((x > 0 && x < 25) || (x > 40 && x < 500)) {
+                    deleteWater(map, i, j);
                 }
             }
         }
@@ -209,19 +200,15 @@ public class ChunkManager {
 
     }
 
-    public void DeleteWater(Chunk[][] map, int x, int y) {
-        if (map[x][y].hasBeenChecked && map[x][y] instanceof OceanChunk) {
-            map[x][y] = new PlainChunk(new Location(x, y));
-            map[x][y].setHasBeenChecked(true);
-            for (int i = x - 1; i <= x + 1; i++) {
-                for (int j = y - 1; j <= y + 1; j++) {
-                    if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
-
-                        if ((i != x || j != y)) {
-                            DeleteWater(map, i, j);
-                        }
-
-                    }
+    public void deleteWater(Chunk[][] map, int x, int y) {
+        if(!(map[x][y] instanceof OceanChunk)){
+            return;
+        }
+        map[x][y] = new PlainChunk(new Location(x, y));
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    deleteWater(map, i, j);
                 }
             }
         }
@@ -241,26 +228,19 @@ public class ChunkManager {
     }
 
     //递归监测从某格开始水域大小
-    public int checkHasWater(Chunk[][] map, int x, int y) {
-        int count = 0;
-        if (!map[x][y].hasBeenChecked && map[x][y] instanceof OceanChunk) {
-            count++;
-            map[x][y].setHasBeenChecked(true);
-            for (int i = x - 1; i <= x + 1; i++) {
-                for (int j = y - 1; j <= y + 1; j++) {
-                    if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
-                        if ((i != x || j != y)) {
-                            count += checkHasWater(map, i, j);
-                        }
-
-                    }
+    public int checkHasWater(Chunk[][] map, boolean[][] vis, int x, int y) {
+        if(vis[x][y] || !(map[x][y] instanceof OceanChunk)){
+            return 0;
+        }
+        int count = 1;
+        vis[x][y] = true;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    count += checkHasWater(map, vis, i, j);
                 }
             }
-        } else {
-            map[x][y].setHasBeenChecked(true);
         }
-
         return count;
     }
-
 }

@@ -34,6 +34,7 @@ import net.mamoe.mirai.message.GroupMessage;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.utils.BotConfiguration;
 import net.mamoe.mirai.utils.SystemDeviceInfoKt;
+import static utils.HttpUtil.saveImage;
 
 /**
  *

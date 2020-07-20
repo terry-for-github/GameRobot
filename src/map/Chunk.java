@@ -9,7 +9,6 @@ public abstract class Chunk {
     private String boime;               // 群系
     private Space[][] spaces;           // 区块的每个空间
     public final int SPACE_SIZE = 11;   // 区块大小
-    public boolean hasBeenChecked=false;//初始化时用来判断湖泊是否被遍历
 
     /**
      * 
@@ -23,14 +22,6 @@ public abstract class Chunk {
                 spaces[i][j] = new Space(new Location(i, j));
             }
         }
-    }
-
-    public boolean isHasBeenChecked() {
-        return hasBeenChecked;
-    }
-
-    public void setHasBeenChecked(boolean hasBeenChecked) {
-        this.hasBeenChecked = hasBeenChecked;
     }
 
     /**
@@ -96,5 +87,4 @@ public abstract class Chunk {
     public void setBoime(String boime) {
         this.boime = boime;
     }
-
 }
