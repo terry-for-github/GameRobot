@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
-import static utils.Initization.ReturnPath;
 import static goods.GoodCreater.stringToGoods;
+import static utils.Initialization.returnPath;
 
 
 /**
@@ -60,12 +60,12 @@ public class PlayerCreater {
      * @throws IOException 
      */
     public static boolean createPlayer(long id) throws IOException {
-        File dataFile = new File(ReturnPath() + "/Saves/Players/" + id);
+        File dataFile = new File(returnPath() + "/Saves/Players/" + id);
         if (!dataFile.exists()) {
             dataFile.mkdirs();
         }
         System.out.println(dataFile.getAbsolutePath());
-        File file = new File(ReturnPath() + "/Saves/Players/" + id + "/" + id + ".json");
+        File file = new File(returnPath() + "/Saves/Players/" + id + "/" + id + ".json");
         if (!file.exists()) {
             Player player = new Player(String.valueOf(id));
             GameRobot.players.put(player.getName(), player);
@@ -85,7 +85,7 @@ public class PlayerCreater {
      */
     public static void savePlayerToFile(long id, Player player) throws IOException{
         Gson gson = new Gson();
-        File playerData = new File(ReturnPath() + "/Saves/Players/" + id + ".json");
+        File playerData = new File(returnPath() + "/Saves/Players/" + id + ".json");
         if(!playerData.exists()){
             playerData.createNewFile();
         }

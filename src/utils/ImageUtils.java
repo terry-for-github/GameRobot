@@ -1,6 +1,5 @@
 package utils;
 
-import com.sun.javafx.applet.Splash;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -8,16 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import map.Chunk;
 import map.ChunkManager;
-import map.forestboime.ForestChunk;
 import map.forestboime.HillChunk;
 import map.forestboime.OceanChunk;
 import map.forestboime.PlainChunk;
@@ -34,73 +30,71 @@ public class ImageUtils {
      * @return 读取到的缓存图像
      * @throws IOException 路径错误或者不存在该文件时抛出IO异常
      */
-    public static BufferedImage getBufferedImage(String fileUrl)
-            throws IOException {
-        File f = new File(fileUrl);
-        return ImageIO.read(f);
+    public static BufferedImage getBufferedImage(String fileUrl) throws IOException {
+        return ImageIO.read(new File(fileUrl));
     }
 
     /**
      * 远程图片转BufferedImage
-     *
      * @param destUrl 远程图片地址
      * @return
+     * @throws java.net.MalformedURLException
+     * @throws java.io.IOException
      */
-    public static BufferedImage getBufferedImageDestUrl(String destUrl) {
-        HttpURLConnection conn = null;
+    public static BufferedImage getBufferedImageDestUrl(String destUrl) throws MalformedURLException, IOException{
         BufferedImage image = null;
-        try {
-            URL url = new URL(destUrl);
-            conn = (HttpURLConnection) url.openConnection();
-            if (conn.getResponseCode() == 200) {
-                image = ImageIO.read(conn.getInputStream());
-                return image;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
+        HttpURLConnection conn = (HttpURLConnection)new URL(destUrl).openConnection();
+        if (conn.getResponseCode() == 200) {
+            image = ImageIO.read(conn.getInputStream());
+            return image;
         }
+        conn.disconnect();
         return image;
     }
 
-    public static void generateSaveFile(BufferedImage buffImg, String savePath) {
+    /**
+     * 
+     * @param buffImg
+     * @param savePath
+     * @throws IOException 
+     */
+    public static void generateSaveFile(BufferedImage buffImg, String savePath) throws IOException {
         int temp = savePath.lastIndexOf(".") + 1;
-        try {
-            File outFile = new File(savePath);
-            if (!outFile.exists()) {
-                outFile.createNewFile();
-            }
-            ImageIO.write(buffImg, savePath.substring(temp), outFile);
-            System.out.println("ImageIO write...");
-        } catch (IOException e) {
-            e.printStackTrace();
+        File outFile = new File(savePath);
+        if (!outFile.exists()) {
+            outFile.createNewFile();
         }
+        ImageIO.write(buffImg, savePath.substring(temp), outFile);
+        System.out.println("ImageIO write...");
     }
 
+    /**
+     * 把waterImg以alpha透明度画在buffImg的(x, y)的位置上
+     * @param buffImg 底图
+     * @param waterImg 覆盖的图
+     * @param x x位置
+     * @param y y位置
+     * @param alpha 透明度
+     * @return 覆盖后的图片
+     * @throws IOException 
+     */
     public static BufferedImage overlyingImage(BufferedImage buffImg, BufferedImage waterImg, int x, int y, float alpha) throws IOException {
 
         // 创建Graphics2D对象，用在底图对象上绘图
         Graphics2D g2d = buffImg.createGraphics();
 //        g2d.setStroke();
-
         int waterImgWidth = waterImg.getWidth();// 获取层图的宽度
-
         int waterImgHeight = waterImg.getHeight();// 获取层图的高度
         // 在图形和图像中实现混合和透明效果
-
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
         // 绘制
         g2d.drawImage(waterImg, x, y, waterImgWidth, waterImgHeight, null);
-
         g2d.dispose();// 释放图形上下文使用的系统资源
-
         return buffImg;
     }
 
     /**
      * 图片覆盖（覆盖图压缩到width*height大小，覆盖到底图上）
-     *
      * @param baseBufferedImage 底图
      * @param coverBufferedImage 覆盖图
      * @param x 起始x轴
@@ -164,53 +158,51 @@ public class ImageUtils {
     /**
      * Java 测试图片叠加方法
      */
-    public static void overlyingImageTest() {
+    public static void overlyingImageTest() throws IOException {
 
         String sourceFilePath = "C:\\Users\\Administrator\\Desktop\\Test\\1.jpg";
         String waterFilePath = "C:\\Users\\Administrator\\Desktop\\Test\\2.jpg";
         String saveFilePath = "C:\\Users\\Administrator\\Desktop\\Test\\overlyingImageNew.jpg";
-        try {
-            BufferedImage bufferImage1 = getBufferedImage(sourceFilePath);
-            BufferedImage bufferImage2 = getBufferedImage(waterFilePath);
+        BufferedImage bufferImage1 = getBufferedImage(sourceFilePath);
+        BufferedImage bufferImage2 = getBufferedImage(waterFilePath);
 
-            // 构建叠加层
-            BufferedImage buffImg = overlyingImage(bufferImage1, bufferImage2, 0, 0, 1.0f);
-            // 输出水印图片
-            generateSaveFile(buffImg, saveFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        // 构建叠加层
+        BufferedImage buffImg = overlyingImage(bufferImage1, bufferImage2, 0, 0, 1.0f);
+        // 输出水印图片
+        generateSaveFile(buffImg, saveFilePath);
     }
 
     /**
      * Java 测试图片合并方法
      */
-    public static void imageMargeTest() {
-        // 读取待合并的文件
-        BufferedImage bi1 = null;
-        BufferedImage bi2 = null;
+    public static void imageMargeTest() throws IOException {
         // 调用mergeImage方法获得合并后的图像
         BufferedImage destImg = null;
         System.out.println("下面是垂直合并的情况：");
         String saveFilePath = "C:\\Users\\Administrator\\Desktop\\Test\\1.jpg";
         String divingPath = "C:\\Users\\Administrator\\Desktop\\Test\\2.jpg";
         String margeImagePath = "C:\\Users\\Administrator\\Desktop\\Test\\overlyingImageNew.jpg";
-
-        try {
-            bi1 = getBufferedImage(saveFilePath);
-            bi2 = getBufferedImage(divingPath);
-            // 调用mergeImage方法获得合并后的图像
-            destImg = mergeImage(bi1, bi2, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedImage bi1 = getBufferedImage(saveFilePath);
+        BufferedImage bi2 = getBufferedImage(divingPath);
+        // 调用mergeImage方法获得合并后的图像
+        destImg = mergeImage(bi1, bi2, false);
         // 保存图像
         generateSaveFile(destImg, margeImagePath);
         System.out.println("垂直合并完毕!");
     }
 
-    public static BufferedImage CreateLine(int x, int y, Color bgcolor, Color pencolor, int length, int width) throws FileNotFoundException {
+    /**
+     * 画线
+     * @param x x位置
+     * @param y y位置
+     * @param bgcolor 背景颜色
+     * @param pencolor 画笔颜色
+     * @param length 长度
+     * @param width 线的宽度
+     * @return 画线后的图片
+     * @throws FileNotFoundException 
+     */
+    public static BufferedImage createLine(int x, int y, Color bgcolor, Color pencolor, int length, int width) throws FileNotFoundException {
 
         ChunkManager chunkManager = new ChunkManager();
 
@@ -300,5 +292,4 @@ public class ImageUtils {
 
         return myImage;
     }
-
 }

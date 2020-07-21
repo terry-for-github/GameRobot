@@ -4,7 +4,6 @@ import goods.consumables.Consumables;
 import goods.armor.ArmorType;
 import goods.armor.Armor;
 import utils.GsonUtil;
-import static utils.Initization.ReturnPath;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import static gamerobot.GameRobot.goods;
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import static utils.GsonUtil.getStringFromObject;
+import static utils.Initialization.returnPath;
 
 /**
  * 创造货物
@@ -137,7 +137,7 @@ public class GoodCreater {
      * @throws IOException 
      */
     public static void saveArmorToFile(Armor armor) throws IOException {
-        File playerData = new File(ReturnPath() + "/Main/Goods/" + armor.getName() + ".json");
+        File playerData = new File(returnPath() + "/Main/Goods/" + armor.getName() + ".json");
         if(!playerData.exists()){
             playerData.createNewFile();
         }
@@ -150,7 +150,7 @@ public class GoodCreater {
      * @throws IOException 
      */
     public static void saveConsumablesToFile(Consumables consumables) throws IOException {
-        File playerData = new File(ReturnPath() + "/Main/Goods/" + consumables.getName() + ".json");
+        File playerData = new File(returnPath() + "/Main/Goods/" + consumables.getName() + ".json");
         if(!playerData.exists()){
             playerData.createNewFile();
         }

@@ -21,7 +21,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import static utils.Initization.ReturnPath;
+import static utils.Initialization.returnPath;
 
 
 /**
@@ -131,7 +131,7 @@ public class HttpUtil {
      */
     public static void saveImage(String keyWord, int page) throws Exception {
         // 储存图片的文件夹
-        File imageDir = new File(ReturnPath() + "/PixivImages");
+        File imageDir = new File(returnPath() + "/PixivImages");
         if(!imageDir.exists()){
             imageDir.mkdir();
         }

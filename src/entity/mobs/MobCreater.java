@@ -2,7 +2,6 @@ package entity.mobs;
 
 import goods.Good;
 import utils.GsonUtil;
-import static utils.Initization.ReturnPath;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import java.io.File;
@@ -11,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import static utils.GsonUtil.getStringFromObject;
 import static goods.GoodCreater.stringToGoods;
+import static utils.Initialization.returnPath;
 
 /**
  * 创造怪物
@@ -59,7 +59,7 @@ public class MobCreater {
      * @throws IOException 
      */
     public static void saveMobToFile(Mob mob) throws IOException {
-        File playerData = new File(ReturnPath() + "/Main/Entity/Mobs/" + mob.getName() + ".json");
+        File playerData = new File(returnPath() + "/Main/Entity/Mobs/" + mob.getName() + ".json");
         if(!playerData.exists()){
             playerData.createNewFile();
         }

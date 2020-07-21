@@ -11,7 +11,7 @@ import goods.Good;
 import java.awt.Color;
 import map.Chunk;
 import map.Location;
-import utils.Initization;
+import utils.Initialization;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +23,6 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import permission.PermissionGroup;
-import static utils.ImageUtils.CreateLine;
-import static utils.Initization.ReturnPath;
 import java.io.FileNotFoundException;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactoryJvm;
@@ -35,6 +33,8 @@ import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.utils.BotConfiguration;
 import net.mamoe.mirai.utils.SystemDeviceInfoKt;
 import static utils.HttpUtil.saveImage;
+import static utils.ImageUtils.createLine;
+import static utils.Initialization.returnPath;
 
 /**
  *
@@ -101,12 +101,12 @@ public class GameRobot {
         // 机器人初始化
         bot = BotFactoryJvm.newBot(501864196, "fuck:19980504", new BotConfiguration() {
             {
-                setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File(ReturnPath() + "/deviceInfo.json"), context));
+                setDeviceInfo(context -> SystemDeviceInfoKt.loadAsDeviceInfo(new File(returnPath() + "/deviceInfo.json"), context));
             }
         });
 
         // 初始化所有信息
-        Initization.Initization();
+        Initialization.Initialization();
 
         // 机器人登录
         bot.login();
@@ -152,7 +152,7 @@ public class GameRobot {
                 Image image;
                 try {
                     System.out.println("Test");
-                    image = event.getGroup().uploadImage(CreateLine(100, 100, Color.WHITE,Color.BLACK, 2000, 2000));
+                    image = event.getGroup().uploadImage(createLine(100, 100, Color.WHITE,Color.BLACK, 2000, 2000));
                     event.getGroup().sendMessage(image);
                 } catch (FileNotFoundException ex) {
 

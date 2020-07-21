@@ -1,7 +1,6 @@
 package entity.plant;
 
 import utils.GsonUtil;
-import static utils.Initization.ReturnPath;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import java.io.File;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 import static utils.GsonUtil.getStringFromObject;
+import static utils.Initialization.returnPath;
 
 /**
  * 创造作物
@@ -43,7 +43,7 @@ public class PlantCreater {
      * @throws IOException 
      */
     public static void savePlantToFile(Plant plant) throws IOException {
-        File playerData = new File(ReturnPath() + "/Main/Entity/Plants/" + plant.getName() + ".json");
+        File playerData = new File(returnPath() + "/Main/Entity/Plants/" + plant.getName() + ".json");
         if(!playerData.exists()){
             playerData.createNewFile();
         }

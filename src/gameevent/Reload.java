@@ -1,7 +1,7 @@
 package gameevent;
 
 import entity.player.Player;
-import utils.Initization;
+import utils.Initialization;
 import static gamerobot.GameRobot.groups;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -30,7 +30,7 @@ public class Reload extends GameEvent{
         if(groups.get("所有者").getMembers().containsValue(player.getName())){
             group.sendMessage("正在重载");
             try {
-                Initization.reload();
+                Initialization.reload();
             } catch (InstantiationException ex) {
                 Logger.getLogger(Reload.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {

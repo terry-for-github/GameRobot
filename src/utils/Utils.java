@@ -22,7 +22,7 @@ import java.net.URL;
  */
 public class Utils {
 
-    public static File GetImage(String theurl) throws Exception {
+    public static File getImage(String theurl) throws Exception {
         //new一个URL对象  
         URL url = new URL(theurl);
         //打开链接  
