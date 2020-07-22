@@ -3,6 +3,7 @@ package map;
 import java.util.Date;
 import java.util.Random;
 import map.forestboime.HillChunk;
+import map.forestboime.LakeChunk;
 import map.forestboime.MountainChunk;
 import map.forestboime.OceanChunk;
 import map.forestboime.PlainChunk;
@@ -165,7 +166,6 @@ public class ChunkManager {
      * @param y
      * @return
      */
-
     public int getSurroundingPlain(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 1; i <= x + 1; i++) {
@@ -312,6 +312,45 @@ public class ChunkManager {
         }
     }
 
+    public int checkHasSand(Chunk[][] map, boolean[][] vis, int x, int y) {
+        if (vis[x][y] || !(map[x][y] instanceof PlainChunk)) {
+            return 0;
+        }
+        int count = 0;
+        vis[x][y] = true;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    if (map[i][j] instanceof SandChunk) {
+                        count++;
+                    } else {
+                        count += checkHasSand(map, vis, i, j);
+                    }
+
+                }
+            }
+        }
+        return count;
+    }
+
+    public boolean surrondHasSandChunk(Chunk[][] map, int x, int y) {
+        boolean[][] vis = new boolean[map.length][map[0].length];
+        int count = 0;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    count += checkHasSand(map, vis, i, j);
+                }
+            }
+        }
+
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //删除小于某个大小的湖泊
     public void deleteTooMuchLake(Chunk[][] map) {
         boolean[][] vis = new boolean[map.length][map[0].length];
@@ -325,6 +364,69 @@ public class ChunkManager {
         }
     }
 
+    public void deleteHill(Chunk[][] map, int x, int y) {
+        if (!(map[x][y] instanceof PlainChunk)) {
+            return;
+        }
+        map[x][y] = new HillChunk(new Location(x, y));
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    deleteHill(map, i, j);
+                }
+            }
+        }
+    }
+
+    public void fillLake(Chunk[][] map, int x, int y) {
+        if (!(map[x][y] instanceof PlainChunk)) {
+            return;
+        }
+        map[x][y] = new LakeChunk(new Location(x, y));
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    fillLake(map, i, j);
+                }
+            }
+        }
+    }
+
+    public void createLake(Chunk[][] map) {
+        boolean[][] vis = new boolean[map.length][map[0].length];
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                int x = checkHasPlaint(map, vis, i, j);
+                if (x > 0 && x < 10) {
+                    if (!surrondHasSandChunk(map, i, j)) {
+                        deleteHill(map, i, j);
+                    }
+                } else {
+                    if (!surrondHasSandChunk(map, i, j)) {
+                        fillLake(map, i, j);
+                    }
+                }
+
+            }
+        }
+    }
+
+    public int checkHasPlaint(Chunk[][] map, boolean[][] vis, int x, int y) {
+        if (vis[x][y] || !(map[x][y] instanceof PlainChunk)) {
+            return 0;
+        }
+        int count = 1;
+        vis[x][y] = true;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    count += checkHasPlaint(map, vis, i, j);
+                }
+            }
+        }
+        return count;
+    }
+
     public void getHill(Chunk[][] map) {
         Random random = new Random(new Date().getTime());
         for (int i = 0; i < map.length; i++) {
@@ -334,7 +436,6 @@ public class ChunkManager {
                 }
             }
         }
-
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] instanceof HillChunk) {
@@ -345,10 +446,10 @@ public class ChunkManager {
 
             }
         }
+
         for (int i = 0; i < 4; i++) {
             smoothPlainMap(map);
         }
-
     }
 
     public void getMountain(Chunk[][] map) {
@@ -391,16 +492,13 @@ public class ChunkManager {
     }
 
     public void getRiver(Chunk[][] map) {
-//        for (int i = 0; i < map.length; i++) {
-//            for (int j = 0; j < map[i].length; j++) {
-//                if (!map[i][j].hasBeenChecked) {
-//                    int x = checkHasWater(map, i, j);
-//                    if (x > 100 && x < 500) {
-//                        map[i][j] = new RiverChunk(new Location(i, j));
-//                    }
-//                }
-//            }
-//        }
+        int rivernumber = new Random().nextInt(4);
+
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+
+            }
+        }
     }
 
     //递归监测从某格开始水域大小
@@ -419,4 +517,5 @@ public class ChunkManager {
         }
         return count;
     }
+
 }

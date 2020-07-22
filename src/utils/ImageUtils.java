@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import map.Chunk;
 import map.ChunkManager;
 import map.forestboime.HillChunk;
+import map.forestboime.LakeChunk;
 import map.forestboime.OceanChunk;
 import map.forestboime.PlainChunk;
 import map.forestboime.RiverChunk;
@@ -257,6 +258,9 @@ public class ImageUtils {
         chunkManager.createBeach(map);
 
         chunkManager.getMountain(map);
+
+        chunkManager.createLake(map);
+
         //画出海洋大陆沙滩
         pen.setStroke(new BasicStroke(length / x));
         for (int i = 0; i < map.length; i++) {
@@ -264,7 +268,6 @@ public class ImageUtils {
                 if (map[i][j] instanceof OceanChunk) {
                     pen.setColor(Color.blue);
                     pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
-
                 } else if (map[i][j] instanceof PlainChunk) {
                     pen.setColor(Color.GRAY);
                     pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
@@ -273,6 +276,12 @@ public class ImageUtils {
                     pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
                 } else if (map[i][j] instanceof HillChunk) {
                     pen.setColor(Color.ORANGE);
+                    pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
+                } else if (map[i][j] instanceof LakeChunk) {
+                    pen.setColor(Color.CYAN);
+                    pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
+                } else if (map[i][j] instanceof HillChunk) {
+                    pen.setColor(Color.RED);
                     pen.drawLine(xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2, xStart + i * (xEnd / x) + (xEnd / x) / 2, yStart + j * (yEnd / y) + (yEnd / y) / 2);
                 }
             }
