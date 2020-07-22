@@ -36,14 +36,15 @@ public class ImageUtils {
 
     /**
      * 远程图片转BufferedImage
+     *
      * @param destUrl 远程图片地址
      * @return
      * @throws java.net.MalformedURLException
      * @throws java.io.IOException
      */
-    public static BufferedImage getBufferedImageDestUrl(String destUrl) throws MalformedURLException, IOException{
+    public static BufferedImage getBufferedImageDestUrl(String destUrl) throws MalformedURLException, IOException {
         BufferedImage image = null;
-        HttpURLConnection conn = (HttpURLConnection)new URL(destUrl).openConnection();
+        HttpURLConnection conn = (HttpURLConnection) new URL(destUrl).openConnection();
         if (conn.getResponseCode() == 200) {
             image = ImageIO.read(conn.getInputStream());
             return image;
@@ -53,10 +54,10 @@ public class ImageUtils {
     }
 
     /**
-     * 
+     *
      * @param buffImg
      * @param savePath
-     * @throws IOException 
+     * @throws IOException
      */
     public static void generateSaveFile(BufferedImage buffImg, String savePath) throws IOException {
         int temp = savePath.lastIndexOf(".") + 1;
@@ -70,13 +71,14 @@ public class ImageUtils {
 
     /**
      * 把waterImg以alpha透明度画在buffImg的(x, y)的位置上
+     *
      * @param buffImg 底图
      * @param waterImg 覆盖的图
      * @param x x位置
      * @param y y位置
      * @param alpha 透明度
      * @return 覆盖后的图片
-     * @throws IOException 
+     * @throws IOException
      */
     public static BufferedImage overlyingImage(BufferedImage buffImg, BufferedImage waterImg, int x, int y, float alpha) throws IOException {
 
@@ -95,6 +97,7 @@ public class ImageUtils {
 
     /**
      * 图片覆盖（覆盖图压缩到width*height大小，覆盖到底图上）
+     *
      * @param baseBufferedImage 底图
      * @param coverBufferedImage 覆盖图
      * @param x 起始x轴
@@ -193,6 +196,7 @@ public class ImageUtils {
 
     /**
      * 画线
+     *
      * @param x x位置
      * @param y y位置
      * @param bgcolor 背景颜色
@@ -200,7 +204,7 @@ public class ImageUtils {
      * @param length 长度
      * @param width 线的宽度
      * @return 画线后的图片
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     public static BufferedImage createLine(int x, int y, Color bgcolor, Color pencolor, int length, int width) throws FileNotFoundException {
 
@@ -246,19 +250,13 @@ public class ImageUtils {
         //判断河流
 //        chunkManager.getRiver(map);
 
-        //        制造沙滩
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                chunkManager.getsandWalls(map, i, j);
-            }
-        }
-
         //制造山丘
         chunkManager.getHill(map);
-        //平滑山丘
-        for (int i = 0; i < 4; i++) {
-            chunkManager.smoothPlainMap(map);
-        }
+
+        //        制造沙滩
+        chunkManager.createBeach(map);
+
+        chunkManager.getMountain(map);
         //画出海洋大陆沙滩
         pen.setStroke(new BasicStroke(length / x));
         for (int i = 0; i < map.length; i++) {

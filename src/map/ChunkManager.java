@@ -61,6 +61,14 @@ public class ChunkManager {
         return wallCount;
     }
 
+    /**
+     * 获取周围更大范围平地的数量
+     *
+     * @param map
+     * @param x
+     * @param y
+     * @return
+     */
     public int getBigSurroundingPlain(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 3; i <= x + 3; i++) {
@@ -77,6 +85,14 @@ public class ChunkManager {
         return wallCount;
     }
 
+    /**
+     * 获取周围更大范围山的数量
+     *
+     * @param map
+     * @param x
+     * @param y
+     * @return
+     */
     public int getBigSurroundingMountain(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 2; i <= x + 2; i++) {
@@ -93,6 +109,14 @@ public class ChunkManager {
         return wallCount;
     }
 
+    /**
+     * 获取周围山的数量
+     *
+     * @param map
+     * @param x
+     * @param y
+     * @return
+     */
     public int getSurroundingMountain(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 1; i <= x + 1; i++) {
@@ -109,6 +133,14 @@ public class ChunkManager {
         return wallCount;
     }
 
+    /**
+     * 获取周围山地的数量
+     *
+     * @param map
+     * @param x
+     * @param y
+     * @return
+     */
     public int getBigSurroundingHill(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 1; i <= x + 1; i++) {
@@ -124,6 +156,15 @@ public class ChunkManager {
         }
         return wallCount;
     }
+
+    /**
+     * 获取周围平原数量
+     *
+     * @param map
+     * @param x
+     * @param y
+     * @return
+     */
 
     public int getSurroundingPlain(Chunk[][] map, int x, int y) {
         int wallCount = 0;
@@ -141,7 +182,15 @@ public class ChunkManager {
         return wallCount;
     }
 
-    //获取周围水域大小
+    /**
+     *
+     * 获取某个方块周围的水的数量
+     *
+     * @param map
+     * @param x
+     * @param y
+     * @return
+     */
     public int getSurroundingWaters(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 1; i <= x + 1; i++) {
@@ -158,6 +207,11 @@ public class ChunkManager {
         return wallCount;
     }
 
+    /**
+     * 平滑山与山地
+     *
+     * @param map
+     */
     public void smoothMountains(Chunk[][] map) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -178,7 +232,7 @@ public class ChunkManager {
     }
 
     /**
-     * 让地图更加平滑
+     * 平滑海与陆地的交界
      *
      * @param map
      */
@@ -215,19 +269,40 @@ public class ChunkManager {
     }
 
     /**
+     * 为整个地图制作沙滩
+     *
+     * @param map
+     */
+    public void createBeach(Chunk[][] map) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                canCreateSand(map, i, j);
+            }
+        }
+        //清除过多的沙滩
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] instanceof SandChunk && getSurroundingWaters(map, i, j) == 0) {
+                    map[i][j] = new PlainChunk(new Location(i, j));
+                }
+            }
+        }
+    }
+
+    /**
      * 判断并且制作海滩
      *
      * @param map 地图
      * @param x x坐标
      * @param y y坐标
      */
-    public void getsandWalls(Chunk[][] map, int x, int y) {
+    public void canCreateSand(Chunk[][] map, int x, int y) {
         if (map[x][y] instanceof PlainChunk) {
             for (int i = x - 1; i <= x + 1; i++) {
                 for (int j = y - 1; j <= y + 1; j++) {
                     if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
-                        if ((i != x || j != y) && map[i][j] instanceof OceanChunk) {
-                            if (getSurroundingWaters(map, x, y) > 0) {
+                        if ((i != x || j != y)) {
+                            if (map[i][j] instanceof OceanChunk && getSurroundingWaters(map, x, y) > 0) {
                                 map[i][j] = new SandChunk(new Location(i, j));
                             }
                         }
@@ -280,7 +355,7 @@ public class ChunkManager {
         Random random = new Random(new Date().getTime());
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if (getBigSurroundingMountain(map, i, j) ==24) {
+                if (getBigSurroundingMountain(map, i, j) == 24) {
                     map[i][j] = new MountainChunk(new Location(i, j));
                 }
             }
