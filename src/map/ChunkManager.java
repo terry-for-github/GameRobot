@@ -3,6 +3,7 @@ package map;
 import java.util.Date;
 import java.util.Random;
 import map.forestboime.HillChunk;
+import map.forestboime.MountainChunk;
 import map.forestboime.OceanChunk;
 import map.forestboime.PlainChunk;
 import map.forestboime.SandChunk;
@@ -76,13 +77,61 @@ public class ChunkManager {
         return wallCount;
     }
 
+    public int getBigSurroundingMountain(Chunk[][] map, int x, int y) {
+        int wallCount = 0;
+        for (int i = x - 2; i <= x + 2; i++) {
+            for (int j = y - 2; j <= y + 2; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    if (i != x || j != y) {
+                        if (map[i][j] instanceof HillChunk || map[i][j] instanceof MountainChunk) {
+                            wallCount++;
+                        }
+                    }
+                }
+            }
+        }
+        return wallCount;
+    }
+
+    public int getSurroundingMountain(Chunk[][] map, int x, int y) {
+        int wallCount = 0;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    if (i != x || j != y) {
+                        if (map[i][j] instanceof MountainChunk) {
+                            wallCount++;
+                        }
+                    }
+                }
+            }
+        }
+        return wallCount;
+    }
+
+    public int getBigSurroundingHill(Chunk[][] map, int x, int y) {
+        int wallCount = 0;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
+                    if (i != x || j != y) {
+                        if (map[i][j] instanceof HillChunk) {
+                            wallCount++;
+                        }
+                    }
+                }
+            }
+        }
+        return wallCount;
+    }
+
     public int getSurroundingPlain(Chunk[][] map, int x, int y) {
         int wallCount = 0;
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (i >= 0 && i < map.length && j >= 0 && j < map[i].length) {
                     if (i != x || j != y) {
-                        if (!(map[i][j] instanceof HillChunk)) {
+                        if (map[i][j] instanceof PlainChunk) {
                             wallCount++;
                         }
                     }
@@ -109,6 +158,25 @@ public class ChunkManager {
         return wallCount;
     }
 
+    public void smoothMountains(Chunk[][] map) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+
+                if (map[i][j] instanceof MountainChunk && getSurroundingMountain(map, i, j) == 0) {
+                    map[i][j] = new HillChunk(new Location(i, j));
+                }
+                int surroundingTiles = getSurroundingMountain(map, i, j);
+                if (surroundingTiles > 4) {
+                    map[i][j] = new MountainChunk(new Location(i, j));
+                } else if (surroundingTiles < 4 && surroundingTiles > 0) {
+                    map[i][j] = new HillChunk(new Location(i, j));
+                }
+
+            }
+        }
+
+    }
+
     /**
      * 让地图更加平滑
      *
@@ -118,7 +186,6 @@ public class ChunkManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 int surroundingTiles = getSurroundingWalls(map, i, j);
-
                 if (surroundingTiles > 4) {
                     map[i][j] = new PlainChunk(new Location(i, j));
                 } else if (surroundingTiles < 4) {
@@ -133,13 +200,14 @@ public class ChunkManager {
     public void smoothPlainMap(Chunk[][] map) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                int surroundingTiles = getSurroundingPlain(map, i, j);
-                if (map[i][j] instanceof HillChunk) {
-                    if (surroundingTiles > 4) {
-                        map[i][j] = new PlainChunk(new Location(i, j));
-                    } else if (surroundingTiles < 4) {
-                        map[i][j] = new HillChunk(new Location(i, j));
-                    }
+                if (map[i][j] instanceof HillChunk && getBigSurroundingHill(map, i, j) == 0) {
+                    map[i][j] = new PlainChunk(new Location(i, j));
+                }
+                int surroundingTiles = getBigSurroundingHill(map, i, j);
+                if (surroundingTiles > 4) {
+                    map[i][j] = new HillChunk(new Location(i, j));
+                } else if (surroundingTiles < 4 && surroundingTiles > 0) {
+                    map[i][j] = new PlainChunk(new Location(i, j));
                 }
 
             }
@@ -175,7 +243,7 @@ public class ChunkManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 int x = checkHasWater(map, vis, i, j);
-                if ((x > 0 && x < 25) || (x > 40 && x < 500)) {
+                if ((x > 0 && x < 450)) {
                     deleteWater(map, i, j);
                 }
             }
@@ -183,25 +251,58 @@ public class ChunkManager {
     }
 
     public void getHill(Chunk[][] map) {
+        Random random = new Random(new Date().getTime());
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if (getBigSurroundingPlain(map, i, j) == 48) {
+                if (getBigSurroundingPlain(map, i, j) > 45) {
                     map[i][j] = new HillChunk(new Location(i, j));
-                } 
-                else if(i>map.length||j>map[i].length)
-                {
-                
                 }
             }
         }
+
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] instanceof HillChunk) {
+                    if (random.nextInt(100) < 46) {
+                        map[i][j] = new PlainChunk(new Location(i, j));
+                    }
+                }
+
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            smoothPlainMap(map);
+        }
+
     }
 
     public void getMountain(Chunk[][] map) {
+        Random random = new Random(new Date().getTime());
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (getBigSurroundingMountain(map, i, j) ==24) {
+                    map[i][j] = new MountainChunk(new Location(i, j));
+                }
+            }
+        }
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] instanceof MountainChunk) {
+                    if (random.nextInt(100) < 43) {
+                        map[i][j] = new HillChunk(new Location(i, j));
+                    }
+                }
 
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            smoothMountains(map);
+        }
     }
 
     public void deleteWater(Chunk[][] map, int x, int y) {
-        if(!(map[x][y] instanceof OceanChunk)){
+        if (!(map[x][y] instanceof OceanChunk)) {
             return;
         }
         map[x][y] = new PlainChunk(new Location(x, y));
@@ -229,7 +330,7 @@ public class ChunkManager {
 
     //递归监测从某格开始水域大小
     public int checkHasWater(Chunk[][] map, boolean[][] vis, int x, int y) {
-        if(vis[x][y] || !(map[x][y] instanceof OceanChunk)){
+        if (vis[x][y] || !(map[x][y] instanceof OceanChunk)) {
             return 0;
         }
         int count = 1;
